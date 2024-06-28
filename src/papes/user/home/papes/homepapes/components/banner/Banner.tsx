@@ -40,7 +40,7 @@ const Banner = () => {
                 </div>
               </div>
             </div>
-            <div className="swiper-slide py-5">
+            {/* <div className="swiper-slide py-5">
               <div className="row banner-content align-items-center">
                 <div className="img-wrapper col-md-5">
                   <img
@@ -107,7 +107,7 @@ const Banner = () => {
                   </a>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="swiper-pagination mb-5"></div>
         </div>

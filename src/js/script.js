@@ -105,11 +105,13 @@
   // init jarallax parallax
   var initJarallax = function() {
     jarallax(document.querySelectorAll(".jarallax"));
-
     jarallax(document.querySelectorAll(".jarallax-keep-img"), {
       keepImg: true,
     });
   }
+  
+  // Include the 'jarallax' library
+  var jarallax = require('jarallax');
 
   // document ready
   $(document).ready(function() {

@@ -116,7 +116,7 @@ const Authen = () => {
                 <Icon className="text-white" icon="la:instagram" />
               </div>
               <a href="#">
-                <img src={`images/insta${num}.jpg`} alt="insta-img" className="img-fluid rounded-3" />
+                <img src={`/src/assets/images/insta${num}.jpg`} alt="insta-img" className="img-fluid rounded-3" />
               </a>
             </div>
           ))}
