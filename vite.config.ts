@@ -19,6 +19,7 @@ export default defineConfig({
       "@pictures": `${path.resolve(__dirname, "./src/pictures/")}`,
       "@stores": `${path.resolve(__dirname, "./src/stores/")}`,
       "@admin": `${path.resolve(__dirname, "./src/papes/admin/")}`,
+      "@images": `${path.resolve(__dirname, "./src/assets/images/")}`,
     },
   },
   css: {

@@ -21,7 +21,8 @@
       "@styles/*": ["./src/styles/*"],
       "@papes/*": ["./src/pages/*"],
       "@api/*": ["./src/apis/*"],
-      "@admin/*": ["./src/papes/admin/*"]
+      "@admin/*": ["./src/papes/admin/*"],
+      "@images/*": ["./src/assets/images/*"]
       // "@firebase/*": ["./src/firebase/*"]
     },
 
@@ -31,6 +32,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "custom.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
