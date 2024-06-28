@@ -16,7 +16,7 @@ const Header = () => {
             <div className="main-logo">
               <a href="/">
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/logo.png?alt=media&token=aed26b6c-48d4-4b92-b3e7-ab90c35c4b43"
+                  src="/src/assets/images/logo.png"
                   alt="logo"
                   className="img-fluid"
                 />
