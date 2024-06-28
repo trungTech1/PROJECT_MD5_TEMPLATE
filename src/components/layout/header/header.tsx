@@ -14,7 +14,7 @@ const Header = () => {
         <div className="row py-4 pb-0 pb-sm-4 align-items-center">
           <div className="col-sm-4 col-lg-3 text-center text-sm-start">
             <div className="main-logo">
-              <a href="index.html">
+              <a href="/">
                 <img
                   src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/logo.png?alt=media&token=aed26b6c-48d4-4b92-b3e7-ab90c35c4b43"
                   alt="logo"
@@ -139,7 +139,7 @@ const Header = () => {
               </select>
               <ul className="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
                 <li className="nav-item">
-                  <a href="index.html" className="nav-link active">
+                  <a href="/" className="nav-link active">
                     Home
                   </a>
                 </li>
@@ -160,124 +160,37 @@ const Header = () => {
                   </a>
                   <ul
                     className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}
-                    aria-labelledby="pages"
+                    aria-labelledby="pages" 
                   >
                     <li>
-                      <a href="about.html" className="dropdown-item">
-                        About Us
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="shop.html" className="dropdown-item">
+                      <a href="/shop" className="dropdown-item">
                         Shop
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
                       </a>
                     </li>
                     <li>
-                      <a href="single-product.html" className="dropdown-item">
-                        Single Product
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="cart.html" className="dropdown-item">
+                      <a href="/cart" className="dropdown-item">
                         Cart
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
                       </a>
                     </li>
                     <li>
-                      <a href="wishlist.html" className="dropdown-item">
+                      <a href="/wishlist" className="dropdown-item">
                         Wishlist
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
                       </a>
                     </li>
                     <li>
-                      <a href="checkout.html" className="dropdown-item">
+                      <a href="/checkout" className="dropdown-item">
                         Checkout
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
                       </a>
                     </li>
                     <li>
-                      <a href="blog.html" className="dropdown-item">
-                        Blog
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="single-post.html" className="dropdown-item">
-                        Single Post
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="contact.html" className="dropdown-item">
-                        Contact
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="faqs.html" className="dropdown-item">
-                        FAQs
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="account.html" className="dropdown-item">
+                      <a href="/account" className="dropdown-item">
                         Account
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="thank-you.html" className="dropdown-item">
-                        Thankyou
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="error.html" className="dropdown-item">
-                        Error 404
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="styles.html" className="dropdown-item">
-                        Styles
-                        <span className="badge bg-success text-dark ms-2">
-                          PRO
-                        </span>
                       </a>
                     </li>
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a href="shop.html" className="nav-link">
+                  <a href="/shop" className="nav-link">
                     Shop
                   </a>
                 </li>
@@ -296,15 +209,7 @@ const Header = () => {
                     Others
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a
-                    href="https://templatesjungle.gumroad.com/l/waggy-pet-shop-ecommerce-html-website-template"
-                    className="nav-link fw-bold text-dark"
-                    target="_blank"
-                  >
-                    GET PRO
-                  </a>
-                </li>
+               
               </ul>
               <div className="d-none d-lg-flex align-items-end">
                 <ul className="d-flex justify-content-end list-unstyled m-0">
