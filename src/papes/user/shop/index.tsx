@@ -1,8 +1,32 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect } from "react";
 import { Icon } from "@iconify/react";
 import item7Image from "@images/item7.jpg";
+import { useDispatch,useSelector } from "react-redux";
+import axios from "axios";
+import { categoryAction } from "@/store/slices/category.slide";
 
 const Shop = () => {
+const dispatch = useDispatch();
+const categoryStore = useSelector((store: any) => store.category);
+console.log(categoryStore.categories);
+useEffect(() => {
+  const fetchData = async () => {
+  await axios.get("http://localhost:3001/category")
+  .then((response) => {
+    if(response.status === 200)
+      console.log(response.data);
+    dispatch(categoryAction.setData(response.data));
+  
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+fetchData();
+}
+, [dispatch]);
+
   return (
     <div className="shop">
       <section id="banner" className="py-3" style={{ background: "#F9F3EC" }}>
@@ -181,6 +205,13 @@ const Shop = () => {
                 <div className="widget-product-categories pt-5">
                   <h4 className="widget-title">Categories</h4>
                   <ul className="product-categories sidebar-list list-unstyled">
+                    {categoryStore.categories?.map((category: any) => (
+                      <li className="cat-item" key={category.id}>
+                        <a href="/collections/categories">{category.name}</a>
+                      </li>
+                    ))}
+                  </ul>
+                  {/* <ul className="product-categories sidebar-list list-unstyled">
                     <li className="cat-item">
                       <a href="/collections/categories">All</a>
                     </li>
@@ -204,7 +235,7 @@ const Shop = () => {
                         Birds
                       </a>
                     </li>
-                  </ul>
+                  </ul> */}
                 </div>
 
                 <div className="widget-product-tags pt-3">
