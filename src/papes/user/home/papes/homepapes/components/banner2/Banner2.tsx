@@ -13,7 +13,7 @@ const Banner2 = () => {
           <div className="secondary-font text-primary text-uppercase mb-3 fs-4">Upto 40% off</div>
           <h2 className="banner-title display-1 fw-normal">Clearance sale !!!
           </h2>
-          <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+          <a href="/shop" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
             shop now
             <svg width="24" height="24" viewBox="0 0 24 24" className="mb-1">
             </svg></a>

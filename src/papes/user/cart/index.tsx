@@ -1,6 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 const Cart = () => {
+      const [quantity, setQuantity] = useState(1);
+
+  const minusHandle = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  }
+  const plusHanlde = () => {
+    setQuantity(quantity + 1);
+  }
   return (
     <div>
         <section id="banner" className="py-3" style={{ background: "#F9F3EC" }}>
@@ -50,20 +60,20 @@ const Cart = () => {
                 <td className="py-4 align-middle">
                   <div className="input-group product-qty align-items-center w-50">
                     <span className="input-group-btn">
-                      <button type="button" className="quantity-left-minus btn btn-light btn-number" data-type="minus">
-                        <svg width="16" height="16">
-                          -
-                        </svg>
+                      <button type="button" className="quantity-left-minus btn btn-light btn-number" data-type="minus"style={
+                          { backgroundColor: "#D1D8DFFa" }}  onClick={minusHandle}>
+                        <span>-</span>
                       </button>
                     </span>
                     <input type="text" id="quantity" name="quantity"
-                      className="form-control input-number text-center p-2 mx-1" value="1"/>
+                      className="form-control input-number text-center p-2 mx-1" 
+                      value={quantity}
+                      />
                     <span className="input-group-btn">
                       <button type="button" className="quantity-right-plus btn btn-light btn-number" data-type="plus"
-                        data-field="">
-                        <svg width="16" height="16">
-                          +
-                        </svg>
+                        data-field=""style={
+                          { backgroundColor: "#D1D8DFFa" }} onClick={plusHanlde}>
+                        <span>+</span>
                       </button>
                     </span>
                   </div>
@@ -102,18 +112,20 @@ const Cart = () => {
                 <td className="py-4 align-middle">
                   <div className="input-group product-qty align-items-center w-50">
                     <span className="input-group-btn">
-                      <button type="button" className="quantity-left-minus btn btn-light btn-number" data-type="minus">
-                        <svg width="16" height="16">
-                        </svg>
+                      <button type="button" className="quantity-left-minus btn btn-light btn-number" data-type="minus"style={
+                          { backgroundColor: "#D1D8DFFa" }}  onClick={minusHandle}>
+                        <span>-</span>
                       </button>
                     </span>
                     <input type="text" id="quantity" name="quantity"
-                      className="form-control input-number text-center p-2 mx-1" value="1"/>
+                      className="form-control input-number text-center p-2 mx-1" 
+                      value={quantity}
+                      />
                     <span className="input-group-btn">
                       <button type="button" className="quantity-right-plus btn btn-light btn-number" data-type="plus"
-                        data-field="">
-                        <svg width="16" height="16">
-                        </svg>
+                        data-field=""style={
+                          { backgroundColor: "#D1D8DFFa" }} onClick={plusHanlde}>
+                        <span>+</span>
                       </button>
                     </span>
                   </div>
@@ -152,18 +164,20 @@ const Cart = () => {
                 <td className="py-4 align-middle">
                   <div className="input-group product-qty align-items-center w-50">
                     <span className="input-group-btn">
-                      <button type="button" className="quantity-left-minus btn btn-light btn-number" data-type="minus">
-                        <svg width="16" height="16">
-                        </svg>
+                      <button type="button" className="quantity-left-minus btn btn-light btn-number" data-type="minus"style={
+                          { backgroundColor: "#D1D8DFFa" }}  onClick={minusHandle}>
+                        <span>-</span>
                       </button>
                     </span>
                     <input type="text" id="quantity" name="quantity"
-                      className="form-control input-number text-center p-2 mx-1" value="1"/>
+                      className="form-control input-number text-center p-2 mx-1" 
+                      value={quantity}
+                      />
                     <span className="input-group-btn">
                       <button type="button" className="quantity-right-plus btn btn-light btn-number" data-type="plus"
-                        data-field="">
-                        <svg width="16" height="16">
-                        </svg>
+                        data-field=""style={
+                          { backgroundColor: "#D1D8DFFa" }} onClick={plusHanlde}>
+                        <span>+</span>
                       </button>
                     </span>
                   </div>

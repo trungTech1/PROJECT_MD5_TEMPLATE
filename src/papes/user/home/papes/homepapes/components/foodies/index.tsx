@@ -17,7 +17,7 @@ const Foodies = () => {
           </p>
         </div>
         <div>
-          <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+          <a href="/shop" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
             shop now
             <svg width="24" height="24" viewBox="0 0 24 24" className="mb-1">
               {/* <use xlink:href="#arrow-right"></use> */}
