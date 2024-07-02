@@ -1,0 +1,30 @@
+.user-dropdown {
+    width: 280px;
+    z-index: 1000;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .user-dropdown form input {
+    font-size: 0.9rem;
+  }
+  
+  .user-dropdown .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .user-dropdown .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  .user-dropdown .dropdown-divider {
+    margin: 0.5rem 0;
+  }
+  
+  .user-dropdown h6 {
+    font-weight: 600;
+  }
+  
+  .user-dropdown small {
+    font-size: 0.875rem;
+  }

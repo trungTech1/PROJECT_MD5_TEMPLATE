@@ -1,0 +1,10 @@
+.product-thumbnail-slider{
+    .swiper-slide:hover{
+            cursor: pointer;
+    }
+    .swiper-slide.selected {
+        border: 2px solid blue; /* Ví dụ về style */
+        /* Thêm nhiều style khác tùy ý để chỉ ra sự chọn lựa */
+      }
+
+}

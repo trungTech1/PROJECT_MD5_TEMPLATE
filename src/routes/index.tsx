@@ -13,6 +13,11 @@ import CategoryEdit from "@/papes/admin/pages/categories/category-edit/CategoryE
 import AddProduct from "@/papes/admin/pages/products/product-add/AddProduct";
 import EditProduct from "@/papes/admin/pages/products/product-edit/EditProduct";
 import AddUser from "@/papes/admin/pages/users/add-user/AddUser";
+import Shop from "@/papes/user/shop/index";
+import Authen from "@/papes/user/home/papes/authen/index";
+import Cart from "@/papes/user/cart/index";
+import Checkout from "@/papes/user/checkout/Checkout";
+import Productdetail from "@/papes/user/detail/Productdetail";
 
 const RootRoutes = () => {
   return (
@@ -21,6 +26,10 @@ const RootRoutes = () => {
         <Route path="/" element={<Home />}>
           <Route index element={<Homepapes />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/authen" element={<Authen />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/product" element={<Productdetail />} />
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="category" element={<Category />} />

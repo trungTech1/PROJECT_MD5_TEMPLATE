@@ -1,13 +1,13 @@
-import React from "react";
-import "./clothing.scss";
+import React from 'react'
 
-const Clothings = () => {
+const Bestselling = () => {
   return (
-    <section id="clothing" className="my-5 overflow-hidden">
-    <div className="container pb-5">
+    <div>
+        <section id="bestselling" className="my-5 overflow-hidden">
+    <div className="container py-5 mb-5">
 
       <div className="section-header d-md-flex justify-content-between align-items-center mb-3">
-        <h2 className="display-3 fw-normal">Pet Clothing</h2>
+        <h2 className="display-3 fw-normal">Best selling products</h2>
         <div>
           <a href="/shop" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
             shop now
@@ -16,18 +16,16 @@ const Clothings = () => {
         </div>
       </div>
 
-      <div className="products-carousel swiper">
+      <div className=" swiper bestselling-swiper" >
         <div className="swiper-wrapper">
 
           <div className="swiper-slide" style={{
             width: "288px",
             marginRight: "30px",
       }}>
-            <div className="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div>
+
             <div className="card position-relative">
-              <a href="single-product.html"><img src="/src/assets/images/item1.jpg" className="img-fluid rounded-4" alt="image"/></a>
+              <a href="single-product.html"><img src="/src/assets/images/item5.jpg" className="img-fluid rounded-4" alt="image"/></a>
               <div className="card-body p-0">
                 <a href="single-product.html">
                   <h3 className="card-title pt-4 m-0">Grey hoodie</h3>
@@ -59,13 +57,12 @@ const Clothings = () => {
               </div>
             </div>
           </div>
-          
           <div className="swiper-slide" style={{
             width: "288px",
             marginRight: "30px",
       }}>
             <div className="card position-relative">
-              <a href="single-product.html"><img src="/src/assets/images/item2.jpg" className="img-fluid rounded-4" alt="image"/></a>
+              <a href="single-product.html"><img src="/src/assets/images/item6.jpg" className="img-fluid rounded-4" alt="image"/></a>
               <div className="card-body p-0">
                 <a href="single-product.html">
                   <h3 className="card-title pt-4 m-0">Grey hoodie</h3>
@@ -96,15 +93,15 @@ const Clothings = () => {
               </div>
             </div>
           </div>
-          <div className="swiper-slide"style={{
+          <div className="swiper-slide" style={{
             width: "288px",
             marginRight: "30px",
       }}>
             <div className="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              -10%
+              Sale
             </div>
             <div className="card position-relative">
-              <a href="single-product.html"><img src="/src/assets/images/item3.jpg" className="img-fluid rounded-4" alt="image"/></a>
+              <a href="single-product.html"><img src="/src/assets/images/item7.jpg" className="img-fluid rounded-4" alt="image"/></a>
               <div className="card-body p-0">
                 <a href="single-product.html">
                   <h3 className="card-title pt-4 m-0">Grey hoodie</h3>
@@ -136,12 +133,12 @@ const Clothings = () => {
               </div>
             </div>
           </div>
-          <div className="swiper-slide"style={{
+          <div className="swiper-slide" style={{
             width: "288px",
             marginRight: "30px",
       }}>
             <div className="card position-relative">
-              <a href="single-product.html"><img src="/src/assets/images/item4.jpg" className="img-fluid rounded-4" alt="image"/></a>
+              <a href="single-product.html"><img src="/src/assets/images/item8.jpg" className="img-fluid rounded-4" alt="image"/></a>
               <div className="card-body p-0">
                 <a href="single-product.html">
                   <h3 className="card-title pt-4 m-0">Grey hoodie</h3>
@@ -174,12 +171,14 @@ const Clothings = () => {
             </div>
           </div>
 
+
         </div>
       </div>
+
     </div>
   </section>
+    </div>
+  )
+}
 
-  );
-};
-
-export default Clothings;
+export default Bestselling

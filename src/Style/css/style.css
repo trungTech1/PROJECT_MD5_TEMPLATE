@@ -102,7 +102,9 @@ CSS STRUCTURE:
     --header-height-min: 80px;
   }
 }
-
+.btn-light{
+  background-color: #FFF;
+}
 /* Theme Colors */
 :root {
   --accent-color: #DEAD6F;

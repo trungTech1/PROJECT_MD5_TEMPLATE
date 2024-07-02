@@ -24,7 +24,7 @@ const Banner = () => {
                     <span className="text-primary">your pets</span>
                   </h2>
                   <a
-                    href="#"
+                    href="/shop"
                     className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1"
                   >
                     shop now
@@ -40,7 +40,7 @@ const Banner = () => {
                 </div>
               </div>
             </div>
-            <div className="swiper-slide py-5">
+            {/* <div className="swiper-slide py-5">
               <div className="row banner-content align-items-center">
                 <div className="img-wrapper col-md-5">
                   <img
@@ -107,7 +107,7 @@ const Banner = () => {
                   </a>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="swiper-pagination mb-5"></div>
         </div>

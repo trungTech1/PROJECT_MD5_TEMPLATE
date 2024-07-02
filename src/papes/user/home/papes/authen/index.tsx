@@ -100,8 +100,67 @@ const Authen = () => {
                   </div>
                 </div>
                 
-                {/* Sign Up tab content (similar structure to Log In tab) */}
-                {/* ... */}
+                <div className="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
+                            <div className="col-lg-8 offset-lg-2 mt-5">
+
+                                <p className="mb-0">Sign-up With Social</p>
+                                <hr className="my-1"/>
+                                <div className="row mt-4 mb-5">
+                                    <div className="d-grid col-md-6 my-2">
+                                        <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 ">
+                                            <div className="d-flex flex-wrap justify-content-center">
+                                                <iconify-icon icon="ion:logo-google"
+                                                    className="signup-social-icon me-2"></iconify-icon>
+                                                <p className="mb-0">Google</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div className="d-grid col-md-6 my-2">
+                                        <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 ">
+                                            <div className="d-flex flex-wrap justify-content-center">
+                                                <iconify-icon icon="ion:logo-facebook"
+                                                    className="signup-social-icon me-2"></iconify-icon>
+                                                <p className="mb-0">Facebook</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+
+                                <p className="mb-0">Or Sign-Up With Email</p>
+                                <hr className="my-1"/>
+
+                                <form id="form1" className="form-group flex-wrap ">
+                                    <div className="form-input col-lg-12 my-4">
+
+                                        <input type="text" id="exampleInputName" name="email"
+                                            placeholder="Your full name" className="form-control mb-3 p-4"/>
+                                        <input type="text" id="exampleInputEmail1" name="email"
+                                            placeholder="Your email address" className="form-control mb-3 p-4"/>
+                                        <input type="password" id="inputPassword1" placeholder="Set your password"
+                                            className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock"/>
+                                        <input type="password" id="inputPassword2" placeholder="Retype your password"
+                                            className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock"/>
+
+                                        <label className="py-3 d-flex flex-wrap justify-content-between">
+                                            <div>
+                                                <input type="checkbox" required className="d-inline"/>
+                                                <span className="label-body ">Remember Me</span>
+                                            </div>
+
+                                            <div id="passwordHelpBlock" className="form-text ">
+                                                <a href="#" className="text-primary  fw-bold"> Forgot Password?</a>
+                                            </div>
+                                        </label>
+                                        <div className="d-grid my-3">
+                                            <a href="#" className="btn btn-dark btn-lg rounded-1">Sign Up</a>
+                                        </div>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
               </div>
             </div>
           </div>
@@ -116,7 +175,7 @@ const Authen = () => {
                 <Icon className="text-white" icon="la:instagram" />
               </div>
               <a href="#">
-                <img src={`images/insta${num}.jpg`} alt="insta-img" className="img-fluid rounded-3" />
+                <img src={`/src/assets/images/insta${num}.jpg`} alt="insta-img" className="img-fluid rounded-3" />
               </a>
             </div>
           ))}
