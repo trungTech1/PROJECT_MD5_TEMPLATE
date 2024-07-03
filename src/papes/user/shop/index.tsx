@@ -1,32 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect } from "react";
+import React from "react";
 import { Icon } from "@iconify/react";
 import item7Image from "@images/item7.jpg";
-import { useDispatch,useSelector } from "react-redux";
-import axios from "axios";
-import { categoryAction } from "@/store/slices/category.slide";
+import { useSelector } from "react-redux";
 
 const Shop = () => {
-const dispatch = useDispatch();
 const categoryStore = useSelector((store: any) => store.category);
 console.log(categoryStore.categories);
-useEffect(() => {
-  const fetchData = async () => {
-  await axios.get("http://localhost:3001/category")
-  .then((response) => {
-    if(response.status === 200)
-      console.log(response.data);
-    dispatch(categoryAction.setData(response.data));
-  
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-}
-fetchData();
-}
-, [dispatch]);
-
   return (
     <div className="shop">
       <section id="banner" className="py-3" style={{ background: "#F9F3EC" }}>

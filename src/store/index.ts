@@ -1,11 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { categoryReducer } from "./slices/category.slide";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { categoryReducer, categoryActions } from "./slices/category.slide";
 
 
-const Store = configureStore({
-  reducer: {
-    category: categoryReducer,
-  },
+const rootReducer = combineReducers({
+  category: categoryReducer,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+const Store = configureStore({
+  reducer: rootReducer,
+});
+
+
+Store.dispatch(categoryActions.fetchData());
 export default Store;

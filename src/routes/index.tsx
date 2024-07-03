@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "@/papes/user/home/home";
 import Homepapes from "@/papes/user/home/papes/homepapes/Homepapes";
 import Shop from "@/papes/user/shop";
-import Admin from "@/papes/admin";
+import Admin from "@/papes/admin/index";
 import Category from "@/papes/admin/pages/categories/CategoryTable";
 import Order from "@/papes/admin/pages/orders/OrderTable";
 import ProductTable from "@/papes/admin/pages/products/ProductTable";
@@ -13,7 +13,6 @@ import CategoryEdit from "@/papes/admin/pages/categories/category-edit/CategoryE
 import AddProduct from "@/papes/admin/pages/products/product-add/AddProduct";
 import EditProduct from "@/papes/admin/pages/products/product-edit/EditProduct";
 import AddUser from "@/papes/admin/pages/users/add-user/AddUser";
-import Shop from "@/papes/user/shop/index";
 import Authen from "@/papes/user/home/papes/authen/index";
 import Cart from "@/papes/user/cart/index";
 import Checkout from "@/papes/user/checkout/Checkout";
@@ -34,7 +33,7 @@ const RootRoutes = () => {
         <Route path="/admin" element={<Admin />}>
           <Route path="category" element={<Category />} />
           <Route path="/admin/category/add" element={<AddCategory />} />
-          <Route path="/admin/category/edit/:categoryId" element={<CategoryEdit categoryId={1} />} />
+          <Route path="/admin/category/edit/:categoryId" element={<CategoryEdit />} />
           <Route path="product" element={<ProductTable />} />
           <Route path="/admin/product/add" element={<AddProduct />} />
           <Route path="/admin/product/edit/:productId" element={<EditProduct />} />

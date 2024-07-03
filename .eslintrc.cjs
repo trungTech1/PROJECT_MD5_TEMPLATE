@@ -14,5 +14,7 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+    // Bỏ đi quy tắc kiểm tra kiểu dữ liệu của biến
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };
