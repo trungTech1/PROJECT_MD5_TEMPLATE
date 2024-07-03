@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const Sidebar: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="sidebar">
+    <div className="sidebar-admin">
       <h1>{t('admin')}</h1>
       <ul className="sidebar-menu">
         <li><Link to="/admin/category"><CategoryIcon/> {t("category")}</Link></li>
