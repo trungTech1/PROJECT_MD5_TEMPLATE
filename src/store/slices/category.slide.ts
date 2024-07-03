@@ -29,6 +29,11 @@ export const categorySlice = createSlice({
     addCategory: (state, action) => {
       state.categories.push(action.payload);
     },
+    updateCategory: (state, action) => {
+      state.categories = state.categories.map((category) =>
+        category.category_id === action.payload.category_id ? action.payload : category
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchData.pending, (state) => {

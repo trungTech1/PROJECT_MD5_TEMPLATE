@@ -3,19 +3,19 @@ import './editCategory.scss';
 import { useTranslation } from 'react-i18next';
 import { Category } from '@/store/slices/category.slide';
 import api from '@/api';
+import { useParams } from 'react-router-dom';
+import   firebase  from '@/firebase/firebase';
 
 
-const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
+const EditCategory: React.FC = () => {
   const [category, setCategory] = useState<Category | null>(null);
-
+  const { categoryId } = useParams<{ categoryId: string }>();
   const {t} = useTranslation();
 
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        console.log("categoryId",categoryId)
-        const response = await api.category.getCategoryById(categoryId);
-        console.log("response day ne",response.data)
+        const response = await api.category.getCategoryById(Number(categoryId));
         setCategory(response.data);
       } catch (error) {
         console.error('Failed to fetch category', error);
@@ -32,10 +32,15 @@ const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0 && category) {
-      const imageFile = URL.createObjectURL(event.target.files[0]);
-      setCategory({ ...category, image: imageFile });
+    if (!event.target.files) {
+      return;
     }
+    const file = event.target.files[0];
+   firebase.uploadToStorage(file).then((url) => {
+      if (category) {
+        setCategory({ ...category, image: url });
+      }
+    });
   };
 
   const handleIsDeletedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,13 +54,13 @@ const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
     if (!category) {
       return;
     }
-    
     const data = {
       category_id: category.category_id,
       category_name: category.category_name,
       image: category.image,
       status: category.status,
     };
+    console.log("data",data)
     try {
       await api.category.updateCategory(data);
       alert(t('updateCategorySuccess'));

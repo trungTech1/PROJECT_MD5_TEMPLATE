@@ -15,9 +15,12 @@ export const categoryApi = {
     updateCategory: async (
         data: { category_id: number; category_name: string; image: string; status: boolean;},
     ) => {
-        return await axios.put(`${API_URL}/${prefix}/update`, data);
+        return await axios.post(`${API_URL}/${prefix}/update/${data.category_id}`, data);
     },
     getCategoryById: async (id: number) => {
         return await axios.get(`${API_URL}/${prefix}/${id}`);
+    },
+    deleteCategory: async (id: number) => {
+        return await axios.get(`${API_URL}/${prefix}/delete/${id}`);
     },
     };

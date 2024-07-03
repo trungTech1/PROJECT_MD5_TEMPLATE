@@ -33,7 +33,7 @@ const RootRoutes = () => {
         <Route path="/admin" element={<Admin />}>
           <Route path="category" element={<Category />} />
           <Route path="/admin/category/add" element={<AddCategory />} />
-          <Route path="/admin/category/edit/:categoryId" element={<CategoryEdit categoryId={1} />} />
+          <Route path="/admin/category/edit/:categoryId" element={<CategoryEdit />} />
           <Route path="product" element={<ProductTable />} />
           <Route path="/admin/product/add" element={<AddProduct />} />
           <Route path="/admin/product/edit/:productId" element={<EditProduct />} />
