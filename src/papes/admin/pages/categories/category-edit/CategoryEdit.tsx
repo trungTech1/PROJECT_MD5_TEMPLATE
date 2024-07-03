@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './editCategory.scss';
 import { useTranslation } from 'react-i18next';
+import { Category } from '@/store/slices/category.slide';
+import api from '@/api';
 
-interface Category {
-  id: number;
-  name: string;
-  image: string;
-  isDeleted: boolean;
-}
 
 const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
   const [category, setCategory] = useState<Category | null>(null);
@@ -15,24 +11,23 @@ const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
   const {t} = useTranslation();
 
   useEffect(() => {
-    // Fetch category data based on categoryId
-    // Replace the fetch logic with actual API call
     const fetchCategory = async () => {
-      // Simulating fetch with dummy data
-      const data = {
-        id: categoryId,
-        name: 'Ghế',
-        image: 'https://via.placeholder.com/50',
-        isDeleted: false,
-      };
-      setCategory(data);
+      try {
+        console.log("categoryId",categoryId)
+        const response = await api.category.getCategoryById(categoryId);
+        console.log("response day ne",response.data)
+        setCategory(response.data);
+      } catch (error) {
+        console.error('Failed to fetch category', error);
+      }
     };
+   
     fetchCategory();
   }, [categoryId]);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (category) {
-      setCategory({ ...category, name: event.target.value });
+      setCategory({ ...category, category_name: event.target.value });
     }
   };
 
@@ -45,14 +40,29 @@ const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
 
   const handleIsDeletedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (category) {
-      setCategory({ ...category, isDeleted: event.target.checked });
+      setCategory({ ...category, status: event.target.checked });
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log('Updated Category:', category);
+    if (!category) {
+      return;
+    }
+    
+    const data = {
+      category_id: category.category_id,
+      category_name: category.category_name,
+      image: category.image,
+      status: category.status,
+    };
+    try {
+      await api.category.updateCategory(data);
+      alert(t('updateCategorySuccess'));
+      window.location.href = '/admin/category';
+    } catch (error) {
+      alert(t('updateCategoryFailed'));
+    }
   };
 
   if (!category) {
@@ -68,7 +78,7 @@ const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
           <input
             type="text"
             id="id"
-            value={category.id}
+            value={category.category_id}
             readOnly
           />
         </div>
@@ -77,7 +87,7 @@ const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
           <input
             type="text"
             id="name"
-            value={category.name}
+            value={category.category_name}
             onChange={handleNameChange}
             required
           />
@@ -99,7 +109,7 @@ const EditCategory: React.FC <{ categoryId: number }> = ({ categoryId }) => {
           <input
             type="checkbox"
             id="isDeleted"
-            checked={category.isDeleted}
+            checked={category.status}
             onChange={handleIsDeletedChange}
           />
         </div>

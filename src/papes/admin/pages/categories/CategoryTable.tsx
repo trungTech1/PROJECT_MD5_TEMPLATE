@@ -2,18 +2,17 @@ import React from 'react';
 import '@admin/pages/categories/CategoryTable.scss';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+// import { SourceTextModule } from 'vm';
+
 
 const CategoryTable: React.FC = () => {
   const { t } = useTranslation();
+  const categoryStore = useSelector((state: RootState) => state.category);
 
-  const listCategory = [
-    {
-      id: 1,
-      name: 'Ghế',
-      image: 'https://via.placeholder.com/50',
-      isDeleted: false,
-    },
-  ];
+  const listCategory = categoryStore.categories;
+
   return (
     <div className="category-table-container">
       <div className="header">
@@ -38,13 +37,13 @@ const CategoryTable: React.FC = () => {
         </thead>
         <tbody>
           {listCategory.map((category) => (
-            <tr key={category.id}>
-              <td>{category.id}</td>
-              <td>{category.name}</td>
-              <td><img src={category.image} alt={category.name} /></td>
-              <td>{category.isDeleted.toString()}</td>
+            <tr key={Date.now()}>
+              <td>{category.category_id}</td>
+              <td>{category.category_name}</td>
+              <td><img src={category.image} alt="category" /></td>
+              <td>{category.status ? t("no") : t("yes")}</td>
               <td>
-                <button className="edit-button"><Link className='link-edit-category' to={`/admin/category/edit/${category.id}`}>{t("editCategory")}</Link></button>
+                <button className="edit-button"><Link className='link-edit-category' to={`/admin/category/edit/${category.category_id}`}>{t("editCategory")}</Link></button>
               </td>
               <td>
                 <button className="delete-button">{t("delete")}</button>

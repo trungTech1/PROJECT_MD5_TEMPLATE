@@ -1,16 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
+import api from "@/api";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+
+export interface Category {
+  category_id: number;
+  category_name: string;
+  image: string;
+  status: boolean;
+}
 
 interface CategoryState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  categories: any[]; // Replace 'any' with the appropriate type for your categories array
+  categories: Category[];
+  loading: boolean;
 }
+
+const initialState: CategoryState = {
+  categories: [],
+  loading: false,
+};
 
 export const categorySlice = createSlice({
   name: "categories",
-  initialState: {
-    categories: [
-    ],
-  } as CategoryState,
+  initialState,
   reducers: {
     setData: (state, action) => {
         state.categories = action.payload;
@@ -19,8 +30,29 @@ export const categorySlice = createSlice({
       state.categories.push(action.payload);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchData.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchData.fulfilled, (state, action) => {
+      state.loading = false;
+      state.categories = action.payload;
+    });
+    builder.addCase(fetchData.rejected, (state) => {
+      state.loading = false;
+    });
+  },
 });
 
 
-export const categoryAction = categorySlice.actions;
+const fetchData = createAsyncThunk(
+  "category/fetchData",
+  async () => {
+    const response = await api.category.getCategories();
+    return response.data;
+  }
+);
+
+
 export const categoryReducer = categorySlice.reducer;
+export const categoryActions = { ...categorySlice.actions, fetchData };
