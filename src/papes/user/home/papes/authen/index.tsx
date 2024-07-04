@@ -1,9 +1,16 @@
 import { Icon } from '@iconify/react/dist/iconify.js'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Modal } from 'antd'
+import api from '@/api'
+import { useAuth } from './authen'
+
+
+
 
 const Authen = () => {
+  const { setLogin } = useAuth();
+  const [currentTab, setCurrentTab] = useState("register");
+
   function register(ev: React.FormEvent) {
     ev.preventDefault()
     const data = {
@@ -12,59 +19,52 @@ const Authen = () => {
       password: (ev.target as any).password.value,
     }
     console.log("data", data)
-    axios.post("http://localhost:8080/register", data, {
-      headers: {
-        lng: localStorage.getItem("lng")
-      }
-    })
-      .then(res => {
-        console.log("first")
-        Modal.success({
-          title: "Thông báo",
-          content: res.data.message
-        })
+    api.user.register(data).then(res => {
+      Modal.success({
+        title: "Thông báo",
+        content: res.data.message
       })
-      .catch(err => {
-        console.log("err", err)
-        Modal.error({
-          title: "Thông báo",
-          content: err.response.data.message
-        })
-
+      setCurrentTab('login');
+    }).catch(err => {
+      Modal.error({
+        title: "Thông báo",
+        content: err.response.data.message
       })
+    });
+    //reset form
+    (ev.target as any).userName.value = '';
+    (ev.target as any).email.value = '';
+    (ev.target as any).password.value = '';
+    (ev.target as any).password.value = '';
   }
-  function login(ev: React.FormEvent) {
+
+  function handleLogin(ev: React.FormEvent) {
     ev.preventDefault()
     let data = {
       loginId: (ev.target as any).loginId.value,
       password: (ev.target as any).password.value
     }
-    axios.post("http://localhost:8080/login", data, {
-      headers: {
-        lng: localStorage.getItem("lng")
-      }
-    })
-      .then(res => {
-        Modal.success({
-          title: "Thông báo",
-          content: res.data.message
-        })
-        localStorage.setItem("token", res.data.token)
+    api.user.login(data).then(res => {
+      Modal.success({
+        title: "Thông báo",
+        content: res.data.message
       })
+      localStorage.setItem("token", res.data.token)
+      setLogin(true)
+    }).catch(err => {
+      Modal.error({
+        title: "Thông báo",
+        content: err.response.data.message
+      })
+    });
+    //reset form
+    (ev.target as any).userName.value = '';
+    (ev.target as any).email.value = '';
+    (ev.target as any).password.value = '';
+    (ev.target as any).password.value = '';
   }
 
-  const [user, setUser] = useState<any>(null);
-  useEffect(() => {
-    axios.post("http://localhost:8080/user/verify", {
-      token: String(localStorage.getItem("token"))
-    })
-      .then(res => {
-        console.log("res", res)
-      })
-      .catch(err => {
-        console.log("err", err)
-      })
-  }, [])
+
 
   return (
     <div>
@@ -88,33 +88,35 @@ const Authen = () => {
               <nav>
                 <div className="nav nav-tabs d-flex justify-content-center border-dark-subtle mb-3" id="nav-tab" role="tablist">
                   <button
-                    className="nav-link mx-3 fs-3 border-bottom border-dark-subtle border-0 text-uppercase active"
+                    className={`nav-link mx-3 fs-3 border-bottom border-dark-subtle border-0 text-uppercase ${currentTab === 'login' ? 'active' : ''}`}
                     id="nav-sign-in-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#nav-sign-in"
                     type="button"
                     role="tab"
                     aria-controls="nav-sign-in"
-                    aria-selected="true"
+                    aria-selected={currentTab === 'login'}
+                    onClick={() => setCurrentTab('login')} // Cập nhật state khi người dùng chọn tab
                   >
                     Log In
                   </button>
                   <button
-                    className="nav-link mx-3 fs-3 border-bottom border-dark-subtle border-0 text-uppercase"
+                    className={`nav-link mx-3 fs-3 border-bottom border-dark-subtle border-0 text-uppercase ${currentTab === 'register' ? 'active' : ''}`}
                     id="nav-register-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#nav-register"
                     type="button"
                     role="tab"
                     aria-controls="nav-register"
-                    aria-selected="false"
+                    aria-selected={currentTab === 'register'}
+                    onClick={() => setCurrentTab('register')} // Cập nhật state khi người dùng chọn tab
                   >
                     Sign Up
                   </button>
                 </div>
               </nav>
               <div className="tab-content" id="nav-tabContent">
-                <div className="tab-pane fade active show" id="nav-sign-in" role="tabpanel" aria-labelledby="nav-sign-in-tab">
+                <div className={`tab-pane fade ${currentTab === 'login' ? 'active show' : ''}`} id="nav-sign-in" role="tabpanel" aria-labelledby="nav-sign-in-tab">
                   <div className="col-lg-8 offset-lg-2 mt-5">
                     <p className="mb-0">Log-In With Social</p>
                     <hr className="my-1" />
@@ -141,7 +143,7 @@ const Authen = () => {
                     <hr className="my-1" />
 
                     <form onSubmit={(ev) => {
-                      login(ev)
+                      handleLogin(ev)
                     }} id="form1" className="form-group flex-wrap">
                       <div className="form-input col-lg-12 my-4">
                         <input type="text" id="exampleInputEmail1" name="loginId" placeholder="Enter email/userName" className="form-control mb-3 p-4" />
@@ -165,7 +167,7 @@ const Authen = () => {
                   </div>
                 </div>
 
-                <div className="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
+                <div className={`tab-pane fade ${currentTab === 'register' ? 'active show' : ''}`} id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
                   <div className="col-lg-8 offset-lg-2 mt-5">
 
                     <p className="mb-0">Sign-up With Social</p>
@@ -209,6 +211,7 @@ const Authen = () => {
                           name='password'
                           className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
                         <input type="password" id="inputPassword2" placeholder="Retype your password"
+                          name='password'
                           className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
 
                         <label className="py-3 d-flex flex-wrap justify-content-between">
