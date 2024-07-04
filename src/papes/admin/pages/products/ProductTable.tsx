@@ -21,15 +21,15 @@ const ProductTable: React.FC = () => {
 const {t} = useTranslation();
 const [products, setProducts] = React.useState<product[]>([]);
 
-useEffect(() => {
-  // Fetch products data
-  // Replace the fetch logic with actual API call
+// useEffect(() => {
+//   // Fetch products data
+//   // Replace the fetch logic with actual API call
 
-  const fetchProducts = async () => {
-    // Simulating fetch with dummy data
-    const data = await api.product.getProducts();
-    setProducts(data);
-  };
+//   const fetchProducts = async () => {
+//     // Simulating fetch with dummy data
+//     const data = await api.product.getProducts();
+//     setProducts(data);
+//   };
 
 
 

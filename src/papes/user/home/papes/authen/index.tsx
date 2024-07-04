@@ -1,11 +1,74 @@
-
 import { Icon } from '@iconify/react/dist/iconify.js'
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Modal } from 'antd'
 
 const Authen = () => {
+  function register(ev: React.FormEvent) {
+    ev.preventDefault()
+    const data = {
+      userName: (ev.target as any).userName.value,
+      email: (ev.target as any).email.value,
+      password: (ev.target as any).password.value,
+    }
+    console.log("data", data)
+    axios.post("http://localhost:8080/register", data, {
+      headers: {
+        lng: localStorage.getItem("lng")
+      }
+    })
+      .then(res => {
+        console.log("first")
+        Modal.success({
+          title: "Thông báo",
+          content: res.data.message
+        })
+      })
+      .catch(err => {
+        console.log("err", err)
+        Modal.error({
+          title: "Thông báo",
+          content: err.response.data.message
+        })
+
+      })
+  }
+  function login(ev: React.FormEvent) {
+    ev.preventDefault()
+    let data = {
+      loginId: (ev.target as any).loginId.value,
+      password: (ev.target as any).password.value
+    }
+    axios.post("http://localhost:8080/login", data, {
+      headers: {
+        lng: localStorage.getItem("lng")
+      }
+    })
+      .then(res => {
+        Modal.success({
+          title: "Thông báo",
+          content: res.data.message
+        })
+        localStorage.setItem("token", res.data.token)
+      })
+  }
+
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    axios.post("http://localhost:8080/user/verify", {
+      token: String(localStorage.getItem("token"))
+    })
+      .then(res => {
+        console.log("res", res)
+      })
+      .catch(err => {
+        console.log("err", err)
+      })
+  }, [])
+
   return (
     <div>
-       <section id="banner" className="py-3" style={{ background: '#F9F3EC' }}>
+      <section id="banner" className="py-3" style={{ background: '#F9F3EC' }}>
         <div className="container">
           <div className="hero-content py-5 my-3">
             <h2 className="display-1 mt-3 mb-0">Account</h2>
@@ -74,13 +137,15 @@ const Authen = () => {
                       </div>
                     </div>
 
-                    <p className="mb-0">Or Log-In With Email</p>
+                    <p className="mb-0">Or Log-In With Email/UserName</p>
                     <hr className="my-1" />
 
-                    <form id="form1" className="form-group flex-wrap">
+                    <form onSubmit={(ev) => {
+                      login(ev)
+                    }} id="form1" className="form-group flex-wrap">
                       <div className="form-input col-lg-12 my-4">
-                        <input type="text" id="exampleInputEmail1" name="email" placeholder="Enter email address" className="form-control mb-3 p-4" />
-                        <input type="password" id="inputPassword1" placeholder="Enter password" className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
+                        <input type="text" id="exampleInputEmail1" name="loginId" placeholder="Enter email/userName" className="form-control mb-3 p-4" />
+                        <input type="password" id="inputPassword1" name='password' placeholder="Enter password" className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
 
                         <label className="py-3 d-flex flex-wrap justify-content-between">
                           <div>
@@ -93,74 +158,78 @@ const Authen = () => {
                           </div>
                         </label>
                         <div className="d-grid my-3">
-                          <a href="#" className="btn btn-dark btn-lg rounded-1">Log In</a>
+                          <button type='submit' className="btn btn-dark btn-lg rounded-1">Login</button>
                         </div>
                       </div>
                     </form>
                   </div>
                 </div>
-                
+
                 <div className="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="nav-register-tab">
-                            <div className="col-lg-8 offset-lg-2 mt-5">
+                  <div className="col-lg-8 offset-lg-2 mt-5">
 
-                                <p className="mb-0">Sign-up With Social</p>
-                                <hr className="my-1"/>
-                                <div className="row mt-4 mb-5">
-                                    <div className="d-grid col-md-6 my-2">
-                                        <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 ">
-                                            <div className="d-flex flex-wrap justify-content-center">
-                                                <iconify-icon icon="ion:logo-google"
-                                                    className="signup-social-icon me-2"></iconify-icon>
-                                                <p className="mb-0">Google</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div className="d-grid col-md-6 my-2">
-                                        <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 ">
-                                            <div className="d-flex flex-wrap justify-content-center">
-                                                <iconify-icon icon="ion:logo-facebook"
-                                                    className="signup-social-icon me-2"></iconify-icon>
-                                                <p className="mb-0">Facebook</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
+                    <p className="mb-0">Sign-up With Social</p>
+                    <hr className="my-1" />
+                    <div className="row mt-4 mb-5">
+                      <div className="d-grid col-md-6 my-2">
+                        <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 ">
+                          <div className="d-flex flex-wrap justify-content-center">
+                            <iconify-icon icon="ion:logo-google"
+                              className="signup-social-icon me-2"></iconify-icon>
+                            <p className="mb-0">Google</p>
+                          </div>
+                        </a>
+                      </div>
+                      <div className="d-grid col-md-6 my-2">
+                        <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 ">
+                          <div className="d-flex flex-wrap justify-content-center">
+                            <iconify-icon icon="ion:logo-facebook"
+                              className="signup-social-icon me-2"></iconify-icon>
+                            <p className="mb-0">Facebook</p>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
 
 
-                                <p className="mb-0">Or Sign-Up With Email</p>
-                                <hr className="my-1"/>
+                    <p className="mb-0">Or Sign-Up With Email/UserName</p>
+                    <hr className="my-1" />
 
-                                <form id="form1" className="form-group flex-wrap ">
-                                    <div className="form-input col-lg-12 my-4">
+                    <form id="form1" className="form-group flex-wrap "
+                      onSubmit={(ev) => {
+                        register(ev)
+                      }}>
+                      <div className="form-input col-lg-12 my-4">
 
-                                        <input type="text" id="exampleInputName" name="email"
-                                            placeholder="Your full name" className="form-control mb-3 p-4"/>
-                                        <input type="text" id="exampleInputEmail1" name="email"
-                                            placeholder="Your email address" className="form-control mb-3 p-4"/>
-                                        <input type="password" id="inputPassword1" placeholder="Set your password"
-                                            className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock"/>
-                                        <input type="password" id="inputPassword2" placeholder="Retype your password"
-                                            className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock"/>
+                        <input type="text" id="exampleInputName" name="userName" className="form-control mb-3 p-4"
+                          placeholder="Your User Name" />
+                        <input type="text" id="exampleInputEmail1" name="email" className="form-control mb-3 p-4"
+                          placeholder="Your email address" />
+                        <input type="password" id="inputPassword1" placeholder="Set your password"
+                          name='password'
+                          className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
+                        <input type="password" id="inputPassword2" placeholder="Retype your password"
+                          className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
 
-                                        <label className="py-3 d-flex flex-wrap justify-content-between">
-                                            <div>
-                                                <input type="checkbox" required className="d-inline"/>
-                                                <span className="label-body ">Remember Me</span>
-                                            </div>
+                        <label className="py-3 d-flex flex-wrap justify-content-between">
+                          <div>
+                            <input type="checkbox" required className="d-inline" />
+                            <span className="label-body ">Remember Me</span>
+                          </div>
 
-                                            <div id="passwordHelpBlock" className="form-text ">
-                                                <a href="#" className="text-primary  fw-bold"> Forgot Password?</a>
-                                            </div>
-                                        </label>
-                                        <div className="d-grid my-3">
-                                            <a href="#" className="btn btn-dark btn-lg rounded-1">Sign Up</a>
-                                        </div>
-
-                                    </div>
-                                </form>
-
-                            </div>
+                          <div id="passwordHelpBlock" className="form-text ">
+                            <a href="#" className="text-primary  fw-bold"> Forgot Password?</a>
+                          </div>
+                        </label>
+                        <div className="d-grid my-3">
+                          <button type='submit' className="btn btn-dark btn-lg rounded-1">Sign Up</button>
                         </div>
+
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
               </div>
             </div>
           </div>
