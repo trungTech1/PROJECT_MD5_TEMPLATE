@@ -32,8 +32,8 @@ const RootRoutes = () => {
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="category" element={<Category />} />
-          <Route path="/admin/category/add" element={<AddCategory />} />
-          <Route path="/admin/category/edit/:categoryId" element={<CategoryEdit />} />
+          <Route path="category/add" element={<AddCategory />} />
+          <Route path="category/edit/:categoryId" element={<CategoryEdit />} />
           <Route path="product" element={<ProductTable />} />
           <Route path="/admin/product/add" element={<AddProduct />} />
           <Route path="/admin/product/edit/:productId" element={<EditProduct />} />

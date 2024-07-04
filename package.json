@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.14",
     "@reduxjs/toolkit": "^2.2.6",
     "@types/chart.js": "^2.9.41",
+    "antd": "^5.19.0",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "firebase": "^10.12.2",
