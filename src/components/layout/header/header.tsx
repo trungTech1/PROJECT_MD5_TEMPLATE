@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { categoryAction } from "@/store/slices/category.slide";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 // import { FaHeart, FaSearch, FaUser } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   FaUser,
   FaSearch,
@@ -48,29 +45,8 @@ const Header = () => {
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const dispatch = useDispatch();
   const categoryStore = useSelector((store: any) => store.category);
-  console.log(categoryStore.categories);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      await axios
-        .get("http://localhost:3001/category")
-        .then((res) => {
-          if (res.status === 200) {
-            console.log(
-              "Dispatching action:",
-              categoryAction.setData(res.data)
-            );
-            dispatch(categoryAction.setData(res.data));
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    fetchCategories();
-    console.log(categoryStore);
-  }, [dispatch]);
+
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (!event.target.closest(".position-relative")) {
@@ -257,7 +233,7 @@ const Header = () => {
                       </a>
                     </li>
                     <li>
-                      <a href="/account" className="dropdown-item">
+                      <a href="/authen" className="dropdown-item">
                         Account
                       </a>
                     </li>
