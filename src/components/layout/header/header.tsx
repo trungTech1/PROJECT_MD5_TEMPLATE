@@ -409,7 +409,7 @@ const Header = () => {
                             </form>
                             <div className="mt-3 text-center">
                               <a
-                                href="/register"
+                                href="/authen"
                                 className="text-decoration-none"
                               >
                                 Đăng ký tài khoản mới
