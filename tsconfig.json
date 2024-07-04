@@ -20,7 +20,7 @@
       "@stores/*": ["./src/stores/*"],
       "@styles/*": ["./src/styles/*"],
       "@papes/*": ["./src/pages/*"],
-      "@api/*": ["./src/apis/*"],
+      "@api/*": ["./src/api/*"],
       "@admin/*": ["./src/papes/admin/*"],
       "@images/*": ["./src/assets/images/*"]
       // "@firebase/*": ["./src/firebase/*"]

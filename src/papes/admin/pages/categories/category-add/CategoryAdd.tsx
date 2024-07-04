@@ -1,31 +1,20 @@
 import React, { useState } from 'react';
 import './addCategory.scss';
 import { useTranslation } from 'react-i18next';
+import api from '@/api';
 
 const AddCategory: React.FC = () => {
   const { t } = useTranslation();
-
   const [name, setName] = useState('');
-  const [image, setImage] = useState<File | null>(null);
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setImage(event.target.files[0]);
-    }
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log('Category Name:', name);
-    console.log('Category Image:', image);
-    // Reset form
-    setName('');
-    setImage(null);
+    const category_name = name;
+    api.category.addCategory({ category_name }).then(() => {
+      alert(t('addCategorySuccess'));
+      window.location.href = '/admin/category';
+    }).catch(() => {
+      alert(t('addCategoryFailed'));
+    });
   };
 
   return (
@@ -38,17 +27,9 @@ const AddCategory: React.FC = () => {
             type="text"
             id="name"
             value={name}
-            onChange={handleNameChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="image">{t("image")}</label>
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageChange}
+            onChange={
+              (event) => setName(event.target.value)
+            }
             required
           />
         </div>
