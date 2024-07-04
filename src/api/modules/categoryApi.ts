@@ -4,9 +4,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 const prefix = "category";
 export const categoryApi = {
     addCategory: async (
-        data: { category_name: string; },
+        data: any,
     ) => {
-        console.log("data day",data.category_name);
         return await axios.post(`${API_URL}/${prefix}/add`, data);
     },
     getCategories: async () => {
@@ -23,4 +22,7 @@ export const categoryApi = {
     deleteCategory: async (id: number) => {
         return await axios.get(`${API_URL}/${prefix}/delete/${id}`);
     },
-    };
+    searchCategory: async (text: string) => {
+        return await axios.get(`${API_URL}/${prefix}/search/${text}`);
+    },
+}

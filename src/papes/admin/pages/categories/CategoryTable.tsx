@@ -1,47 +1,38 @@
-import React from 'react';
-import '@admin/pages/categories/CategoryTable.scss';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import api from '@/api';
-import { categoryActions } from '@/store/slices/category.slide';
-// import { SourceTextModule } from 'vm';
-
+import React from "react";
+import "@admin/pages/categories/CategoryTable.scss";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import api from "@/api";
+import { categoryActions } from "@/store/slices/category.slide";
+import { Modal } from "antd";
 
 const CategoryTable: React.FC = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const categoryStore = useSelector((state: RootState) =>{
+  const categoryStore = useSelector((state: RootState) => {
     return state.category;
   });
-  const dipatch = useDispatch();
-  const navigate = useNavigate();
-  const listCategory = categoryStore.categories;
-
-  const handleEdit = (id: number) => {
-    console.log("id cate",id)
-    navigate(`/admin/category/edit/${id}`);
-  }
-
-  const handleDelete = (id : number) => {
-    api.category.deleteCategory(id).then(() => {
-      dipatch(categoryActions.updateCategory(id));
-      alert(t('deleteCategorySuccess'));
-    }
-    ).catch(() => {
-      alert(t('deleteCategoryFailed'));
-    });
-  }
 
   return (
     <div className="category-table-container">
       <div className="header">
         <h1>{t("categoryTable")}</h1>
         <div className="actions">
-          <button className="add-button"><Link className='link-add-category' to="/admin/category/add">{t("addNewCategory")}</Link></button>
+          <button className="add-button">
+            <Link className="link-add-category" to="add">
+              {t("addNewCategory")}
+            </Link>
+          </button>
           <div className="search-box">
             <input type="text" placeholder={t("placeholderSearchCategory")} />
-            <button>{t("search")}</button>
+            <button
+              className="search-button"
+              // onClick={() =>}
+            >
+              {t("search")}
+            </button>
           </div>
         </div>
       </div>
@@ -56,22 +47,53 @@ const CategoryTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {listCategory.map((category) => (
-            <tr key={Date.now()}>
+          {categoryStore.categories?.map((category) => (
+            <tr key={category.category_id}>
               <td>{category.category_id}</td>
               <td>{category.category_name}</td>
-              <td><img src={category.image} alt="category"/></td>
+
+              <td>
+                {category.image ? (
+                  <img src={category.image} alt="category" />
+                ) : (
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg?alt=media&token=a1ec7eae-fbc7-4306-b7ec-bb2e6ad3c91c"
+                    alt="category"
+                  />
+                )}
+              </td>
               <td>{category.status ? t("no") : t("yes")}</td>
               <td>
-              <button className="edit-button" onClick={() => handleEdit(category.category_id)}>
-                  {t("editCategory")}
+                <button
+                  className="edit-button"
+                >
+                  <Link to={`edit/${category.category_id}`}>{t("edit")}</Link>
                 </button>
               </td>
               <td>
-                <button className="delete-button" 
-                onClick={() => handleDelete(category.category_id)
-                }
-                >{t("delete")}</button>
+                <button
+                  className="delete-button"
+                  onClick={() => [
+                    Modal.confirm({
+                      title: "Xác nhận!",
+                      content: "Bạn chắc chưa",
+                      onOk: () => {
+                        api.category
+                          .deleteCategory(category.category_id)
+                          .then((res) => {
+                            res.data;
+                            dispatch(
+                              categoryActions.deleteCategory(
+                                category.category_id
+                              )
+                            );
+                          });
+                      },
+                    }),
+                  ]}
+                >
+                  {t("delete")}
+                </button>
               </td>
             </tr>
           ))}

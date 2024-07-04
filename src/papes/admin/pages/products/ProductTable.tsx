@@ -2,9 +2,36 @@ import React from 'react';
 import './ProductTable.scss';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
+import { use } from 'i18next';
+import api from '@/api';
+interface product {
+  product_id: number;
+  sku: string;
+  product_name: string;
+  image: string;
+  unitPrice: number;
+  decription: string;
+  stock_quantity: number;
+  category_id: number;
+  status: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 const ProductTable: React.FC = () => {
 const {t} = useTranslation();
+const [products, setProducts] = React.useState<product[]>([]);
+
+// useEffect(() => {
+//   // Fetch products data
+//   // Replace the fetch logic with actual API call
+
+//   const fetchProducts = async () => {
+//     // Simulating fetch with dummy data
+//     const data = await api.product.getProducts();
+//     setProducts(data);
+//   };
+
+
 
   return (
     <div className="product-table-container">
@@ -38,7 +65,7 @@ const {t} = useTranslation();
             <td>1</td>
             <td>1</td>
             <td>Ghế 1</td>
-            <td><img src="https://via.placeholder.com/50" alt="Product 1" /></td>
+            <td></td>
             <td>500.0</td>
             <td>20</td>
             <td>1</td>

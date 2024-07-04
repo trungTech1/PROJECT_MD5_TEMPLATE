@@ -6,7 +6,7 @@ import { Modal } from 'antd'
 const Authen = () => {
   function register(ev: React.FormEvent) {
     ev.preventDefault()
-    let data = {
+    const data = {
       userName: (ev.target as any).userName.value,
       email: (ev.target as any).email.value,
       password: (ev.target as any).password.value,

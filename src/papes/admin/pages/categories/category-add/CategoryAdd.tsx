@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './addCategory.scss';
 import { useTranslation } from 'react-i18next';
 import api from '@/api';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { categoryActions } from '@/store/slices/category.slide';
+import { fireBaseFn } from '@/firebase/firebase';
+
 
 const AddCategory: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [name, setName] = useState('');
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const category_name = name;
-    api.category.addCategory({ category_name }).then(() => {
-      alert(t('addCategorySuccess'));
-      window.location.href = '/admin/category';
+
+    const newCategory = {
+      category_name: (event.target as any).category_name.value,
+      image: await fireBaseFn.uploadToStorage((event.target as any).image.files[0]),
+    }
+
+    console.log("đã vào", newCategory)
+
+    api.category.addCategory(
+      newCategory
+    ).then((res) => {
+       alert(res.data.message);
+       dispatch(categoryActions.addCategory(res.data.data));
+       navigate(-1);
     }).catch(() => {
       alert(t('addCategoryFailed'));
     });
@@ -19,19 +36,19 @@ const AddCategory: React.FC = () => {
 
   return (
     <div className="add-category">
+      <button onClick={() => {
+        navigate(-1)
+      }}>Back</button>
       <h1 className="title">{t("addNCategory")}</h1>
       <form className="category-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">{t("name")}</label>
           <input
             type="text"
-            id="name"
-            value={name}
-            onChange={
-              (event) => setName(event.target.value)
-            }
+            name="category_name"
             required
           />
+          <input type="file" name='image'/>
         </div>
         <button type="submit" className="submit-button">{t("addCategory")}</button>
       </form>
