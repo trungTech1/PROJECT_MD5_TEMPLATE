@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState } from "react";
-import { UseSelector } from "react-redux";
 // import { FaHeart, FaSearch, FaUser } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { useSelector } from "react-redux";
@@ -35,7 +34,7 @@ const Header = () => {
 
   function handleLogin(ev: React.FormEvent) {
     ev.preventDefault()
-    let data = {
+    const data = {
       loginId: (ev.target as any).loginId.value,
       password: (ev.target as any).password.value
     }
@@ -209,7 +208,9 @@ const Header = () => {
               <select className="filter-categories border-0 mb-0 me-5">
                 <option>Shop by Category</option>
                 {categoryStore.categories?.map((category: any) => (
-                  <option key={category.id}>{category.name}</option>
+                  <option key={category.category_id} value={category.category_id}>
+                    {category.category_name}
+                  </option>
                 ))}
               </select>
               <ul className="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
@@ -342,7 +343,7 @@ const Header = () => {
                     >
                       <FaUser className="fs-4 me-2" />
                       <span className="d-none d-md-inline">
-                        {login? "Logged" : "Login"}
+                        {login ? "Tài khoản" : "Đăng nhập"}
                       </span>
                     </a>
                     {isUserDropdownOpen && (

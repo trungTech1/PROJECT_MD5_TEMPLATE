@@ -1,82 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import './addProduct.scss';
 import { useTranslation } from 'react-i18next';
+import { Category } from '@/store/slices/category.slide';
+import { RootState } from '@/store';
+import {  useSelector } from 'react-redux';
+import { fireBaseFn } from '@/firebase/firebase';
+import api from '@/api';
+import { Modal } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-interface Category {
-  id: number;
-  name: string;
-}
 
 const AddProduct: React.FC = () => {
 const {t} = useTranslation();
-
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [productName, setProductName] = useState('');
-  const [productImage, setProductImage] = useState<File | null>(null);
-  const [productPrice, setProductPrice] = useState<number>(0);
-  const [productStock, setProductStock] = useState<number>(0);
-  const [categoryId, setCategoryId] = useState<number | null>(null);
-
-  useEffect(() => {
-    // Fetch categories data
-    // Replace the fetch logic with actual API call
-    const fetchCategories = async () => {
-      // Simulating fetch with dummy data
-      const data = [
-        { id: 1, name: 'Category 1' },
-        { id: 2, name: 'Category 2' },
-        { id: 3, name: 'Category 3' },
-      ];
-      setCategories(data);
-    };
-    fetchCategories();
-  }, []);
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setProductName(event.target.value);
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setProductImage(event.target.files[0]);
-    }
-  };
-
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setProductPrice(parseFloat(event.target.value));
-  };
-
-  const handleStockChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setProductStock(parseInt(event.target.value, 10));
-  };
-
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setCategoryId(parseInt(event.target.value, 10));
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+const navigate = useNavigate();
+const [categories, setCategories] = useState<Category[]>([]);
+const category = useSelector((state: RootState) => state.category);
+useEffect(() => {
+  if (category.categories) {
+    setCategories(category.categories);
+  }
+}, [category]);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log('Product Details:', {
-      productName,
-      productImage,
-      productPrice,
-      productStock,
-      categoryId,
+    const images = (event.target as any).image.files;
+    const imageUrls: string[] = [];
+    for (let i = 0; i < images.length; i++) {
+     await fireBaseFn.uploadToStorage(images[i]).then((url) => {
+        imageUrls.push(url);
+      });
+    }
+  
+    const newProduct = {
+      product_name: (event.target as any).name.value,
+      images: imageUrls,
+      unitPrice: (event.target as any).price.value,
+      stock_quantity: (event.target as any).stock.value,
+      category_id: (event.target as any).category.value,
+      description: (event.target as any).description.value,
+    };
+    console.log("product",newProduct)
+    await api.product.addProduct(newProduct).then(() => {
+      Modal.success({
+        content: t('addProductSuccess'),
+      });
+      navigate('/admin/product');
+    }).catch(() => {
+      Modal.error({
+        content: t('addProductFailed'),
+      });
     });
   };
 
   return (
     <div className="add-product">
       <h1 className="title">{t("addNproduct")}</h1>
-      <form className="product-form" onSubmit={handleSubmit}>
+      <form className="product-form" onSubmit={handleSubmit} >
         <div className="form-group">
           <label htmlFor="name">{t("name")}</label>
           <input
             type="text"
             id="name"
-            value={productName}
-            onChange={handleNameChange}
+            name='name'
             required
           />
         </div>
@@ -85,8 +69,9 @@ const {t} = useTranslation();
           <input
             type="file"
             id="image"
+            name='image'
             accept="image/*"
-            onChange={handleImageChange}
+            multiple={true}
           />
         </div>
         <div className="form-group">
@@ -94,8 +79,7 @@ const {t} = useTranslation();
           <input
             type="number"
             id="price"
-            value={productPrice}
-            onChange={handlePriceChange}
+            name='price'    
             required
           />
         </div>
@@ -104,21 +88,29 @@ const {t} = useTranslation();
           <input
             type="number"
             id="stock"
-            value={productStock}
-            onChange={handleStockChange}
+            name='stock'
             required
           />
         </div>
         <div className="form-group">
           <label htmlFor="category">{t("category")}</label>
-          <select id="category" value={categoryId ?? ''} onChange={handleCategoryChange} required>
-            <option value="" disabled>{t("selectacategory")}</option>
-            {categories.map(category => (
-              <option key={category.id} value={category.id}>
-                {category.name}
+          <select id="category" required>
+            <option value="" >{t("selectacategory")}</option>
+            {categories?.map((category) => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.category_name}
               </option>
             ))}
           </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">{t("description")}</label>
+          <input
+            id="description"
+            type = 'text'
+            name='description'
+            required
+          />
         </div>
         <button type="submit" className="submit-button">{t("addProduct")}</button>
       </form>

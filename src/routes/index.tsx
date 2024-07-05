@@ -34,11 +34,11 @@ const RootRoutes = () => {
           <Route path="category" element={<Category />} />
           <Route path="category/add" element={<AddCategory />} />
           <Route path="category/edit/:categoryId" element={<CategoryEdit />} />
-          <Route path="product" element={<ProductTable />} />
-          <Route path="/admin/product/add" element={<AddProduct />} />
-          <Route path="/admin/product/edit/:productId" element={<EditProduct />} />
+          <Route path="product" element={<ProductTable />}/>
+          <Route path="product/add" element={<AddProduct />} />
+          <Route path="product/edit/:productId" element={<EditProduct />} />
           <Route path="user" element={<User />} />
-          <Route path="/admin/user/add" element={<AddUser />} />
+          <Route path="user/add" element={<AddUser />} />
           <Route path="order" element={<Order />} />
         </Route>
       </Routes>

@@ -40,7 +40,7 @@ const Authen = () => {
 
   function handleLogin(ev: React.FormEvent) {
     ev.preventDefault()
-    let data = {
+    const data = {
       loginId: (ev.target as any).loginId.value,
       password: (ev.target as any).password.value
     }
@@ -143,6 +143,7 @@ const Authen = () => {
                     <hr className="my-1" />
 
                     <form onSubmit={(ev) => {
+                      handleLogin(ev)
                       handleLogin(ev)
                     }} id="form1" className="form-group flex-wrap">
                       <div className="form-input col-lg-12 my-4">
