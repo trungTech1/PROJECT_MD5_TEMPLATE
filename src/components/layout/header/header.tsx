@@ -4,6 +4,7 @@ import React, {useEffect, useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import {User} from "@/store/slices/user.slice";
+import { useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaSearch,
@@ -16,12 +17,14 @@ import "./header.scss";
 import api from "@/api";
 import { Modal } from "antd";
 import { useAuth } from "@/papes/user/home/papes/authen/authen";
+import { use } from "i18next";
 
 const Header = () => {
-  const {login, setLogin} = useAuth(
-  );
+  const {login, setLogin} = useAuth();
 
   const User = useSelector((store: any) => store.user);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUser(user);
@@ -33,27 +36,38 @@ const Header = () => {
   const [user, setUser] = useState<User | null>(null);
 
   function handleLogin(ev: React.FormEvent) {
-    ev.preventDefault()
+    ev.preventDefault();
+
     const data = {
       loginId: (ev.target as any).loginId.value,
       password: (ev.target as any).password.value
-    }
+    };
+
     api.user.login(data).then(res => {
       Modal.success({
         title: "Thông báo",
         content: res.data.message
-      })
-      localStorage.setItem("token", res.data.token)
+      });
+      console.log(res);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", User.role);
+      console.log(res.data.role)
       setLogin(true);
-      console.log("login success")
+
+      if (res.data.role === 'true') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }).catch(err => {
       Modal.error({
         title: "Thông báo",
-        content: err.response.message
-      })
-    })
-  }
-
+        content: err.response.data.message
+      });
+    });
+    //reset form
+    (ev.target as any).reset();
+}
   
   const handleLogout = (e: any) => {
     localStorage.removeItem("token");
