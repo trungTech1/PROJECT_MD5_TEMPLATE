@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const Shop = () => {
 const categoryStore = useSelector((store: any) => store.category);
-console.log(categoryStore.categories);
+console.log(categoryStore.categories[0].category_name);
   return (
     <div className="shop">
       <section id="banner" className="py-3" style={{ background: "#F9F3EC" }}>
@@ -186,36 +186,13 @@ console.log(categoryStore.categories);
                   <h4 className="widget-title">Categories</h4>
                   <ul className="product-categories sidebar-list list-unstyled">
                     {categoryStore.categories?.map((category: any) => (
-                      <li className="cat-item" key={category.id}>
-                        <a href="/collections/categories">{category.name}</a>
+                      <li className="cat-item" key={
+                        Date.now() + Math.random()
+                      }>
+                        <a href="">{category.category_name}</a>
                       </li>
                     ))}
                   </ul>
-                  {/* <ul className="product-categories sidebar-list list-unstyled">
-                    <li className="cat-item">
-                      <a href="/collections/categories">All</a>
-                    </li>
-                    <li className="cat-item">
-                      <a href="#" className="nav-link">
-                        Dogs
-                      </a>
-                    </li>
-                    <li className="cat-item">
-                      <a href="#" className="nav-link">
-                        Food
-                      </a>
-                    </li>
-                    <li className="cat-item">
-                      <a href="#" className="nav-link">
-                        Cats
-                      </a>
-                    </li>
-                    <li className="cat-item">
-                      <a href="#" className="nav-link">
-                        Birds
-                      </a>
-                    </li>
-                  </ul> */}
                 </div>
 
                 <div className="widget-product-tags pt-3">

@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './editProduct.scss';
 import { useTranslation } from 'react-i18next';
+import { Category } from '@/store/slices/category.slide';
 
-interface Category {
-  id: number;
-  name: string;
-}
 
 interface Product {
   id: number;
@@ -25,38 +22,7 @@ const EditProduct: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [product, setProduct] = useState<Product | null>(null);
 
-  useEffect(() => {
-    // Fetch categories data
-    // Replace the fetch logic with actual API call
-    const fetchCategories = async () => {
-      // Simulating fetch with dummy data
-      const data = [
-        { id: 1, name: 'Category 1' },
-        { id: 2, name: 'Category 2' },
-        { id: 3, name: 'Category 3' },
-      ];
-      setCategories(data);
-    };
 
-    // Fetch product data by ID
-    // Replace the fetch logic with actual API call
-    const fetchProduct = async () => {
-      // Simulating fetch with dummy data
-      const data = {
-        id: parseInt(productId, 10),
-        sku: 'SKU12345',
-        name: 'Product Name',
-        image: 'https://via.placeholder.com/150',
-        price: 100.0,
-        stock: 20,
-        categoryId: 1,
-      };
-      setProduct(data);
-    };
-
-    fetchCategories();
-    fetchProduct();
-  }, [productId]);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (product) {
@@ -117,6 +83,10 @@ const EditProduct: React.FC = () => {
             <label htmlFor="image">{t("image")}</label>
             <input type="file" id="image" accept="image/*" onChange={handleImageChange} />
             {product.image && <img src={product.image} alt="Product" className="product-image" />}
+          </div>
+          <div className="form-group">
+            <label htmlFor="price">{t("price")}</label>
+            <input type="number" id="price" value={product.price} onChange={handlePriceChange} required />
           </div>
           <div className="form-group">
             <label htmlFor="price">{t("price")}</label>

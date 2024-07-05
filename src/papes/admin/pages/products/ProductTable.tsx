@@ -1,44 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ProductTable.scss';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { use } from 'i18next';
 import api from '@/api';
+import { Modal } from 'antd';
 interface product {
   product_id: number;
   sku: string;
   product_name: string;
-  image: string;
+  imageUrls: string[];
   unitPrice: number;
   decription: string;
   stock_quantity: number;
   category_id: number;
   status: boolean;
-  createdAt: string;
+  created_at: string;
   updatedAt: string;
 }
 const ProductTable: React.FC = () => {
 const {t} = useTranslation();
 const [products, setProducts] = React.useState<product[]>([]);
+useEffect(() => {
+  const fetchProducts = async () => {
+    // Correctly call the function here
+    await api.product.getAllproducts().then((res: any) => { 
+      setProducts(res.data);
+    }).catch(() => {
+      alert(t('fetchProductFailed'));
+    });
+  };
+  fetchProducts();
+}, [t]);
 
-// useEffect(() => {
-//   // Fetch products data
-//   // Replace the fetch logic with actual API call
-
-//   const fetchProducts = async () => {
-//     // Simulating fetch with dummy data
-//     const data = await api.product.getProducts();
-//     setProducts(data);
-//   };
-
-
-
+// const addNewProduct = (newProduct: product) => {
+//   setProducts(prevProducts => [...prevProducts, newProduct]);
+// };
   return (
     <div className="product-table-container">
       <div className="header">
         <h1>{t("productTable")}</h1>
         <div className="actions">
-          <button className="add-button"><Link className='link-add-product' to="/admin/product/add">{t("addProduct")}</Link> </button>
+          <button className="add-button"><Link className='link-add-product' to="add">{t("addProduct")}</Link> </button>
           <div className="search-box">
             <input type="text" placeholder={t("enterproductname")} />
             <button>{t("search")}</button>
@@ -61,23 +63,49 @@ const [products, setProducts] = React.useState<product[]>([]);
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>Ghế 1</td>
-            <td></td>
-            <td>500.0</td>
-            <td>20</td>
-            <td>1</td>
-            <td>16/06/2024</td>
-            <td>17/06/2024</td>
-            <td>
-              <button className="edit-button"><Link className='link-edit-product' to="/admin/product/edit">{t("edit")}</Link></button>
-            </td>
-            <td>
-              <button className="delete-button">{t("delete")}</button>
-            </td>
-          </tr>
+            {products?.map((product) => (
+              <tr key={product.product_id}>
+                <td>{product.product_id}</td>
+                <td>{product.sku}</td>
+                <td>{product.product_name}</td>
+                <td>
+                  {product.imageUrls ? (
+                    <img src={product.imageUrls[0]} alt="product" />
+                  ) : (
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg?alt=media&token=a1ec7eae-fbc7-4306-b7ec-bb2e6ad3c91c"
+                      alt="product"
+                    />
+                  )}
+                </td>
+                <td>{product.unitPrice}</td>
+                <td>{product.stock_quantity}</td>
+                <td>{product.category_id}</td>
+                <td>{product.created_at}</td>
+                <td>{product.updatedAt}</td>
+                <td>
+                  <button className="edit-button"><Link to={`/admin/product/edit/${product.product_id}`}>{t("edit")}</Link></button>
+                </td>
+                <td>
+                  <button className="delete-button"  
+                  onClick={() => [
+                    Modal.confirm({
+                      title: "Xác nhận!",
+                      content: "Bạn chắc chưa",
+                      onOk: () => {
+                        api.product.deleteProduct(product.product_id)
+                          .then((res) => {
+                            Modal.success({content: t('deleteProductSuccess')});
+                            setProducts(products.filter((item) => item.product_id !== product.product_id));
+                            res.data;}).catch(() => {
+                            Modal.error({content: t('deleteProductFailed')});
+                          });
+                      },
+                    }),
+                  ]} >{t("delete")}</button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className="pagination">

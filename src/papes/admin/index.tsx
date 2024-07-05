@@ -7,9 +7,8 @@ import { useTranslation } from 'react-i18next';
 import ChangeLanguage from '@/i18n/ChangeLanguage';
 
 const Admin: React.FC = () => {
-
   const { t } = useTranslation();
-
+  
   return (
     <div className="wrapper">
       <Sidebar />
