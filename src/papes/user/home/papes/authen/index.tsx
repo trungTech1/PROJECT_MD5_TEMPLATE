@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { Modal } from 'antd'
 import api from '@/api'
 import { useAuth } from './authen'
-
-
+import { useNavigate } from 'react-router-dom';
 
 
 const Authen = () => {
   const { setLogin } = useAuth();
   const [currentTab, setCurrentTab] = useState("register");
+  const navigate = useNavigate();
+
 
   function register(ev: React.FormEvent) {
     ev.preventDefault()
@@ -32,40 +33,42 @@ const Authen = () => {
       })
     });
     //reset form
-    (ev.target as any).userName.value = '';
-    (ev.target as any).email.value = '';
-    (ev.target as any).password.value = '';
-    (ev.target as any).password.value = '';
+    (ev.target as any).reset();
   }
 
-  function handleLogin(ev: React.FormEvent) {
-    ev.preventDefault()
+function handleLogin(ev: React.FormEvent) {
+    ev.preventDefault();
+
     const data = {
       loginId: (ev.target as any).loginId.value,
       password: (ev.target as any).password.value
-    }
+    };
+
     api.user.login(data).then(res => {
       Modal.success({
         title: "Thông báo",
         content: res.data.message
-      })
-      localStorage.setItem("token", res.data.token)
-      setLogin(true)
+      });
+      console.log(res);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+      console.log(res.data.role)
+      setLogin(true);
+
+      if (res.data.role === 'true') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }).catch(err => {
       Modal.error({
         title: "Thông báo",
         content: err.response.data.message
-      })
+      });
     });
     //reset form
-    (ev.target as any).userName.value = '';
-    (ev.target as any).email.value = '';
-    (ev.target as any).password.value = '';
-    (ev.target as any).password.value = '';
-  }
-
-
-
+    (ev.target as any).reset();
+}
   return (
     <div>
       <section id="banner" className="py-3" style={{ background: '#F9F3EC' }}>
@@ -144,11 +147,10 @@ const Authen = () => {
 
                     <form onSubmit={(ev) => {
                       handleLogin(ev)
-                      handleLogin(ev)
                     }} id="form1" className="form-group flex-wrap">
                       <div className="form-input col-lg-12 my-4">
-                        <input type="text" id="exampleInputEmail1" name="loginId" placeholder="Enter email/userName" className="form-control mb-3 p-4" />
-                        <input type="password" id="inputPassword1" name='password' placeholder="Enter password" className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
+                        <input required type="text" id="exampleInputEmail1" name="loginId" placeholder="Enter email/userName" className="form-control mb-3 p-4" />
+                        <input minLength={6} required type="password" id="inputPassword1" name='password' placeholder="Enter password" className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
 
                         <label className="py-3 d-flex flex-wrap justify-content-between">
                           <div>
@@ -204,16 +206,16 @@ const Authen = () => {
                       }}>
                       <div className="form-input col-lg-12 my-4">
 
-                        <input type="text" id="exampleInputName" name="userName" className="form-control mb-3 p-4"
+                        <input required type="text" id="exampleInputName" name="userName" className="form-control mb-3 p-4"
                           placeholder="Your User Name" />
-                        <input type="text" id="exampleInputEmail1" name="email" className="form-control mb-3 p-4"
+                        <input required type="text" id="exampleInputEmail1" name="email" className="form-control mb-3 p-4"
                           placeholder="Your email address" />
-                        <input type="password" id="inputPassword1" placeholder="Set your password"
+                        <input required minLength={6} type="password" id="inputPassword1" placeholder="Set your password"
                           name='password'
                           className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
-                        <input type="password" id="inputPassword2" placeholder="Retype your password"
-                          name='password'
-                          className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" />
+                        {/* <input required minLength={6} type="password" id="inputPassword2" placeholder="Retype your password"
+                          name='repassword'
+                          className="form-control mb-3 p-4" aria-describedby="passwordHelpBlock" /> */}
 
                         <label className="py-3 d-flex flex-wrap justify-content-between">
                           <div>
