@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
+import { UseSelector } from "react-redux";
 // import { FaHeart, FaSearch, FaUser } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+import {User} from "@/store/slices/user.slice";
 import {
   FaUser,
   FaSearch,
@@ -12,29 +14,52 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import "./header.scss";
+import api from "@/api";
+import { Modal } from "antd";
+import { useAuth } from "@/papes/user/home/papes/authen/authen";
 
-interface User {
-  name: string;
-  email: string;
-}
 const Header = () => {
+  const {login, setLogin} = useAuth(
+  );
+
+  const User = useSelector((store: any) => store.user);
+
+  useEffect(() => {
+    setUser(user);
+  }, [User]);
+  
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Giả sử ban đầu người dùng chưa đăng nhập
   const [user, setUser] = useState<User | null>(null);
 
-  const handleLogin = (e: any) => {
-    e.preventDefault();
-    // Xử lý logic đăng nhập ở đây
-    setIsLoggedIn(true);
-    setUser({ name: "User Name", email: "user@example.com" }); // Thay thế bằng thông tin người dùng thực tế
-    setIsUserDropdownOpen(false);
-  };
+  function handleLogin(ev: React.FormEvent) {
+    ev.preventDefault()
+    let data = {
+      loginId: (ev.target as any).loginId.value,
+      password: (ev.target as any).password.value
+    }
+    api.user.login(data).then(res => {
+      Modal.success({
+        title: "Thông báo",
+        content: res.data.message
+      })
+      localStorage.setItem("token", res.data.token)
+      setLogin(true);
+      console.log("login success")
+    }).catch(err => {
+      Modal.error({
+        title: "Thông báo",
+        content: err.response.message
+      })
+    })
+  }
 
+  
   const handleLogout = (e: any) => {
+    localStorage.removeItem("token");
     e.preventDefault();
-    // Xử lý logic đăng xuất ở đây
-    setIsLoggedIn(false);
+    setLogin(false);
     setUser(null);
     setIsUserDropdownOpen(false);
   };
@@ -194,9 +219,8 @@ const Header = () => {
                   </a>
                 </li>
                 <li
-                  className={`nav-item dropdown ${
-                    isDropdownOpen ? "show" : ""
-                  }`}
+                  className={`nav-item dropdown ${isDropdownOpen ? "show" : ""
+                    }`}
                 >
                   <a
                     className="nav-link dropdown-toggle"
@@ -318,19 +342,19 @@ const Header = () => {
                     >
                       <FaUser className="fs-4 me-2" />
                       <span className="d-none d-md-inline">
-                        {isLoggedIn ? "Tài khoản" : "Đăng nhập"}
+                        {login? "Logged" : "Login"}
                       </span>
                     </a>
                     {isUserDropdownOpen && (
                       <div className="position-absolute end-0 mt-2 py-2 bg-white rounded-3 shadow-lg user-dropdown">
-                        {isLoggedIn ? (
+                        {login ? (
                           <>
                             <div className="px-4 py-3 border-bottom">
                               <h6 className="mb-0">
-                                Xin chào, {user?.name || "User"}
+                                Xin chào, {User.data.userName}
                               </h6>
                               <small className="text-muted">
-                                {user?.email || "user@example.com"}
+                                {User.data.email}
                               </small>
                             </div>
                             <ul className="list-unstyled mb-0">
@@ -382,21 +406,25 @@ const Header = () => {
                           </>
                         ) : (
                           <div className="px-4 py-3">
-                            <h6 className="mb-3">Đăng nhập</h6>
-                            <form onSubmit={handleLogin}>
+                            <h6 className="mb-3">Login</h6>
+                            <form onSubmit={(ev) => {
+                              handleLogin(ev)
+                            }}>
                               <div className="mb-3">
                                 <input
-                                  type="email"
+                                  type="text"
+                                  name="loginId"
                                   className="form-control"
-                                  placeholder="Email"
+                                  placeholder="Email/User Name"
                                   required
                                 />
                               </div>
                               <div className="mb-3">
                                 <input
                                   type="password"
+                                  name="password"
                                   className="form-control"
-                                  placeholder="Mật khẩu"
+                                  placeholder="Password"
                                   required
                                 />
                               </div>
@@ -404,7 +432,7 @@ const Header = () => {
                                 type="submit"
                                 className="btn btn-primary w-100"
                               >
-                                Đăng nhập
+                                Login
                               </button>
                             </form>
                             <div className="mt-3 text-center">
@@ -412,7 +440,7 @@ const Header = () => {
                                 href="/authen"
                                 className="text-decoration-none"
                               >
-                                Đăng ký tài khoản mới
+                                Create an account
                               </a>
                             </div>
                           </div>
@@ -422,7 +450,7 @@ const Header = () => {
                   </li>
                   <li>
                     <a href="/wishlist" className="mx-3">
-                    <FaHeart className="fs-4 mx-3" />
+                      <FaHeart className="fs-4 mx-3" />
                     </a>
                   </li>
 
