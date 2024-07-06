@@ -17,6 +17,7 @@ import Authen from "@/papes/user/home/papes/authen/index";
 import Cart from "@/papes/user/cart/index";
 import Checkout from "@/papes/user/checkout/Checkout";
 import Productdetail from "@/papes/user/detail/Productdetail";
+import AccountProfile from "@/papes/user/home/papes/accountProfile/AccountProfile";
 
 const RootRoutes = () => {
   return (
@@ -29,6 +30,7 @@ const RootRoutes = () => {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="product" element={<Productdetail />} />
+
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="category" element={<Category />} />

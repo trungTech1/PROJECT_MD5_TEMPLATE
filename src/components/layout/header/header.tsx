@@ -16,6 +16,9 @@ import "./header.scss";
 import api from "@/api";
 import { Modal } from "antd";
 import { useAuth } from "@/papes/user/home/papes/authen/authen";
+
+const Header = () => {
+  const { login, setLogin } = useAuth();
 import { RootState } from "@/store";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +26,6 @@ const Header = () => {
   const { login, setLogin } = useAuth();
 
   const User = useSelector((store: any) => store.user);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +36,25 @@ const Header = () => {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      api.user.verifyToken(token).then(res => {
+        setUser(res.data.user);
+        setLogin(true);
+      }).catch(err => {
+        console.error("Token verification failed:", err);
+        localStorage.removeItem("token");
+        setLogin(false);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    setUser(User);
+  }, [User]);
+
+  const handleLogin = (ev: React.FormEvent) => {
   const categoryStore = useSelector((state: RootState) => {
     return state.category;
   });
@@ -63,6 +84,27 @@ console.log(categoryStore.categories)
           content: err.response.message,
         });
       });
+
+      console.log(res);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", User.role);
+      console.log(res.data.role);
+      setLogin(true);
+
+      if (res.data.role === 'true') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    }).catch(err => {
+      Modal.error({
+        title: "Thông báo",
+        content: err.response.data.message
+      });
+    });
+    //reset form
+    (ev.target as any).reset();
+  };
   }
 
   const handleLogout = (e: any) => {
@@ -76,11 +118,12 @@ console.log(categoryStore.categories)
   const handleUserDropdownToggle = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
   };
+
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-
+  const categoryStore = useSelector((store: any) => store.category);
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -353,7 +396,7 @@ console.log(categoryStore.categories)
                     >
                       <FaUser className="fs-4 me-2" />
                       <span className="d-none d-md-inline">
-                        {login ? "Tài khoản" : "Đăng nhập"}
+                        {login ? "Account" : "Login"}
                       </span>
                     </a>
                     {isUserDropdownOpen && (
@@ -362,7 +405,7 @@ console.log(categoryStore.categories)
                           <>
                             <div className="px-4 py-3 border-bottom">
                               <h6 className="mb-0">
-                                Xin chào, {User.data.userName}
+                                Hello, {User.data.userName}
                               </h6>
                               <small className="text-muted">
                                 {User.data.email}
@@ -374,8 +417,7 @@ console.log(categoryStore.categories)
                                   href="/account"
                                   className="dropdown-item py-2 px-4"
                                 >
-                                  <FaUser className="me-2" /> Thông tin tài
-                                  khoản
+                                  <FaUser className="me-2" /> User Profile
                                 </a>
                               </li>
                               <li>
@@ -383,8 +425,7 @@ console.log(categoryStore.categories)
                                   href="/orders"
                                   className="dropdown-item py-2 px-4"
                                 >
-                                  <FaShoppingBag className="me-2" /> Đơn hàng
-                                  của tôi
+                                  <FaShoppingBag className="me-2" /> My Orders
                                 </a>
                               </li>
                               <li>
@@ -392,8 +433,7 @@ console.log(categoryStore.categories)
                                   href="/wishlist"
                                   className="dropdown-item py-2 px-4"
                                 >
-                                  <FaHeart className="me-2" /> Sản phẩm yêu
-                                  thích
+                                  <FaHeart className="me-2" /> Favorite products
                                 </a>
                               </li>
                               <li>
@@ -401,7 +441,7 @@ console.log(categoryStore.categories)
                                   href="/settings"
                                   className="dropdown-item py-2 px-4"
                                 >
-                                  <FaCog className="me-2" /> Cài đặt
+                                  <FaCog className="me-2" /> Setting
                                 </a>
                               </li>
                               <li>
@@ -410,7 +450,7 @@ console.log(categoryStore.categories)
                                   className="dropdown-item py-2 px-4 "
                                   onClick={handleLogout}
                                 >
-                                  <FaSignOutAlt className="me-2" /> Đăng xuất
+                                  <FaSignOutAlt className="me-2" /> Log Out
                                 </a>
                               </li>
                             </ul>
