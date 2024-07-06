@@ -4,6 +4,7 @@ import Headers from "@/components/layout/header/header";
 import Footer from "@/components/layout/footer/footer";
 import { Outlet } from "react-router-dom";
 import { AuthProvider } from "@/papes/user/home/papes/authen/authen";
+import moneyFormat from "@/util/util";
 
 const home = () => {
   return (
@@ -221,8 +222,7 @@ const home = () => {
         </div>
       </div>
     </div>
-      <Headers 
-
+      <Headers
       />
       <Outlet />
       <div className="footer-wrapper">
