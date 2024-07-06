@@ -246,7 +246,7 @@ const handleLogin = (ev: React.FormEvent) => {
               </select>
               <ul className="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
                 <li className="nav-item">
-                  <a href="/" className="nav-link active">
+                  <a href="" className="nav-link active">
                     Home
                   </a>
                 </li>
@@ -270,34 +270,34 @@ const handleLogin = (ev: React.FormEvent) => {
                     aria-labelledby="pages"
                   >
                     <li>
-                      <a href="/shop" className="dropdown-item">
+                      <a href="shop" className="dropdown-item">
                         Shop
                       </a>
                     </li>
                     <li>
-                      <a href="/cart" className="dropdown-item">
+                      <a href="cart" className="dropdown-item">
                         Cart
                       </a>
                     </li>
                     <li>
-                      <a href="/wishlist" className="dropdown-item">
+                      <a href="wishlist" className="dropdown-item">
                         Wishlist
                       </a>
                     </li>
                     <li>
-                      <a href="/checkout" className="dropdown-item">
+                      <a href="checkout" className="dropdown-item">
                         Checkout
                       </a>
                     </li>
                     <li>
-                      <a href="/authen" className="dropdown-item">
+                      <a href="authen" className="dropdown-item">
                         Account
                       </a>
                     </li>
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a href="/shop" className="nav-link">
+                  <a href="shop" className="nav-link">
                     Shop
                   </a>
                 </li>
