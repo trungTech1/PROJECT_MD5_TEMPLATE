@@ -25,12 +25,12 @@ const RootRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />}>
           <Route index element={<Homepapes />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/authen" element={<Authen />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/product" element={<Productdetail />} />
-          <Route path="/account" element={<AccountProfile />} />
+
+          <Route path="shop" element={<Shop />} />
+          <Route path="authen" element={<Authen />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="product" element={<Productdetail />} />
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="category" element={<Category />} />
