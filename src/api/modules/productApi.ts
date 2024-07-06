@@ -4,8 +4,17 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL;
 const prefix = 'product';
 export const productApi = {
-    getAllproducts: async () => {
-        return await axios.get(`${API_URL}/${prefix}`);
+    getAllproducts: async (
+        page: number,
+        size: number,
+        searchTeam?: string
+    ) => {
+        let url = `${API_URL}/${prefix}?page=${page}&size=${size}`;
+        if (searchTeam) {
+            url = `${API_URL}/${prefix}/search?page=${page}&size=${size}&search=${encodeURIComponent(searchTeam)}`;
+        }
+        return await axios.get(url);
+
     },
     getProductById: async (id: number) => {
         return await axios.get(`${API_URL}/${prefix}/${id}`);

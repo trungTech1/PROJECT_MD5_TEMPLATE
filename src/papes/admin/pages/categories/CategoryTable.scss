@@ -1,4 +1,9 @@
 .category-table-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100%;
+
     .header {
       display: flex;
       justify-content: space-between;
@@ -61,24 +66,42 @@
         }
       }
     }
+    .table-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
   
     .category-table {
       width: 100%;
       border-collapse: collapse;
   
+      thead {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa;
+        z-index: 1;
+      }
+  
       th, td {
+        font-size: 20px;
         padding: 10px;
         text-align: center;
         border: 1px solid #ddd;
       }
   
       th {
-        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa; // hoặc màu nền mong muốn
+        z-index: 1;
       }
   
       img {
         width: 100px;
         height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
       }
   
       .edit-button {
@@ -133,4 +156,4 @@
       }
     }
   }
-  
+ 

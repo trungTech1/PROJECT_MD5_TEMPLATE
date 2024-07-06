@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { FaHeart, FaSearch, FaUser } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { useSelector } from "react-redux";
-import {User} from "@/store/slices/user.slice";
-import { useNavigate } from "react-router-dom";
+import { User } from "@/store/slices/user.slice";
 import {
   FaUser,
   FaSearch,
@@ -20,8 +19,19 @@ import { useAuth } from "@/papes/user/home/papes/authen/authen";
 
 const Header = () => {
   const { login, setLogin } = useAuth();
+import { RootState } from "@/store";
+import { useNavigate } from "react-router-dom";
+
+const Header = () => {
+  const { login, setLogin } = useAuth();
+
   const User = useSelector((store: any) => store.user);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUser(user);
+  }, [User]);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -45,18 +55,36 @@ const Header = () => {
   }, [User]);
 
   const handleLogin = (ev: React.FormEvent) => {
-    ev.preventDefault();
+  const categoryStore = useSelector((state: RootState) => {
+    return state.category;
+  });
 
+console.log(categoryStore.categories)
+
+  function handleLogin(ev: React.FormEvent) {
+    ev.preventDefault();
     const data = {
       loginId: (ev.target as any).loginId.value,
-      password: (ev.target as any).password.value
+      password: (ev.target as any).password.value,
     };
-
-    api.user.login(data).then(res => {
-      Modal.success({
-        title: "Thông báo",
-        content: res.data.message
+    api.user
+      .login(data)
+      .then((res) => {
+        Modal.success({
+          title: "Thông báo",
+          content: res.data.message,
+        });
+        localStorage.setItem("token", res.data.token);
+        setLogin(true);
+        console.log("login success");
+      })
+      .catch((err) => {
+        Modal.error({
+          title: "Thông báo",
+          content: err.response.message,
+        });
       });
+
       console.log(res);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", User.role);
@@ -77,6 +105,7 @@ const Header = () => {
     //reset form
     (ev.target as any).reset();
   };
+  }
 
   const handleLogout = (e: any) => {
     localStorage.removeItem("token");
@@ -232,10 +261,8 @@ const Header = () => {
             <div className="offcanvas-body justify-content-between">
               <select className="filter-categories border-0 mb-0 me-5">
                 <option>Shop by Category</option>
-                {categoryStore.categories?.map((category: any) => (
-                  <option key={category.category_id} value={category.category_id}>
-                    {category.category_name}
-                  </option>
+                {categoryStore.categories?.map((category) => (
+                  <option key={category.category_id}>{category.category_name}</option>
                 ))}
               </select>
               <ul className="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
@@ -245,8 +272,9 @@ const Header = () => {
                   </a>
                 </li>
                 <li
-                  className={`nav-item dropdown ${isDropdownOpen ? "show" : ""
-                    }`}
+                  className={`nav-item dropdown ${
+                    isDropdownOpen ? "show" : ""
+                  }`}
                 >
                   <a
                     className="nav-link dropdown-toggle"
@@ -430,9 +458,11 @@ const Header = () => {
                         ) : (
                           <div className="px-4 py-3">
                             <h6 className="mb-3">Login</h6>
-                            <form onSubmit={(ev) => {
-                              handleLogin(ev)
-                            }}>
+                            <form
+                              onSubmit={(ev) => {
+                                handleLogin(ev);
+                              }}
+                            >
                               <div className="mb-3">
                                 <input
                                   type="text"
