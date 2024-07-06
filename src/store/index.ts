@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { categoryReducer, categoryActions } from "./slices/category.slide";
-import { UserState, userActions, userReducer } from "./slices/user.slice";
+import { categoryReducer,categoryActions } from "./slices/category.slide";
+import {  userActions, userReducer } from "./slices/user.slice";
 
 
 const rootReducer = combineReducers({
@@ -14,6 +14,7 @@ const Store = configureStore({
 });
 
 
-Store.dispatch(categoryActions.fetchData());
+Store.dispatch(categoryActions.fetchData( {page: 0, pageSize: 10}));
+console.log("Store", categoryActions.fetchData( {page: 0, pageSize: 10}));
 Store.dispatch(userActions.getUserData());
 export default Store;
