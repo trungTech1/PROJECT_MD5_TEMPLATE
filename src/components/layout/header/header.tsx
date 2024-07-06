@@ -16,9 +16,6 @@ import "./header.scss";
 import api from "@/api";
 import { Modal } from "antd";
 import { useAuth } from "@/papes/user/home/papes/authen/authen";
-
-const Header = () => {
-  const { login, setLogin } = useAuth();
 import { RootState } from "@/store";
 import { useNavigate } from "react-router-dom";
 
@@ -51,61 +48,45 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    setUser(User);
+    if (User) {
+      setUser(User);
+    }
   }, [User]);
 
-  const handleLogin = (ev: React.FormEvent) => {
   const categoryStore = useSelector((state: RootState) => {
     return state.category;
   });
 
-console.log(categoryStore.categories)
-
-  function handleLogin(ev: React.FormEvent) {
-    ev.preventDefault();
-    const data = {
-      loginId: (ev.target as any).loginId.value,
-      password: (ev.target as any).password.value,
-    };
-    api.user
-      .login(data)
-      .then((res) => {
-        Modal.success({
-          title: "Thông báo",
-          content: res.data.message,
-        });
-        localStorage.setItem("token", res.data.token);
-        setLogin(true);
-        console.log("login success");
-      })
-      .catch((err) => {
-        Modal.error({
-          title: "Thông báo",
-          content: err.response.message,
-        });
+const handleLogin = (ev: React.FormEvent) => {
+  ev.preventDefault();
+  const data = {
+    loginId: (ev.target as any).loginId.value,
+    password: (ev.target as any).password.value,
+  };
+  api.user
+    .login(data)
+    .then((res) => {
+      Modal.success({
+        title: "Thông báo",
+        content: res.data.message,
       });
-
-      console.log(res);
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", User.role);
-      console.log(res.data.role);
+      localStorage.setItem("role", res.data.role);
       setLogin(true);
-
       if (res.data.role === 'true') {
         navigate('/admin');
       } else {
         navigate('/');
       }
-    }).catch(err => {
+    })
+    .catch((err) => {
       Modal.error({
         title: "Thông báo",
-        content: err.response.data.message
+        content: err.response?.data?.message || "Đăng nhập thất bại",
       });
     });
-    //reset form
-    (ev.target as any).reset();
-  };
-  }
+  (ev.target as any).reset();
+};
 
   const handleLogout = (e: any) => {
     localStorage.removeItem("token");
@@ -122,8 +103,6 @@ console.log(categoryStore.categories)
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
-  const categoryStore = useSelector((store: any) => store.category);
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -340,51 +319,6 @@ console.log(categoryStore.categories)
               </ul>
               <div className="d-none d-lg-flex align-items-end">
                 <ul className="d-flex justify-content-end list-unstyled m-0">
-                  {/* <li
-                    className={`nav-item dropdown ${
-                      isUserDropdownOpen ? "show" : ""
-                    }`}
-                  >
-                    <a
-                      className="mx-3 dropdown-toggle"
-                      role="button"
-                      id="userDropdown"
-                      data-bs-toggle="dropdown"
-                      aria-expanded={isUserDropdownOpen}
-                      onClick={handleUserDropdownToggle}
-                    >
-                      <FaUser className="fs-4" />
-                    </a>
-                    <ul
-                      className={`dropdown-menu ${
-                        isUserDropdownOpen ? "show" : ""
-                      }`}
-                      aria-labelledby="userDropdown"
-                    >
-                      <li>
-                        <span>
-                          <a href="/authen" className="dropdown-item">
-                            Thông tin cá nhân
-                          </a>
-                        </span>
-                      </li>
-                      <li>
-                        <a href="/cart" className="dropdown-item">
-                          Cart
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/wishlist" className="dropdown-item">
-                          Wishlist
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/checkout" className="dropdown-item">
-                          logout
-                        </a>
-                      </li>
-                    </ul>
-                  </li> */}
                   <li className="position-relative">
                     <a
                       href="#"
@@ -529,6 +463,7 @@ console.log(categoryStore.categories)
       </div>
     </header>
   );
-};
+
+}
 
 export default Header;
