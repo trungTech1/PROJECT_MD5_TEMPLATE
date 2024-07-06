@@ -1,6 +1,8 @@
 import React from 'react'
 import "./productdetail.scss"
 const Productdetail = () => {
+
+  
   return (
     <div>
        <section id="banner" className="py-3" style={{background:"#F9F3EC;"}}>
