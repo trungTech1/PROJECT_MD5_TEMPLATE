@@ -5,7 +5,18 @@ import item7Image from "@images/item7.jpg";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import api from "@/api";
-
+import "./shop.scss";
+import moneyFormat from "@/util/util";
+interface product {
+  product_id: number;
+  product_name: string;
+  imageUrls: string[];
+  unitPrice: number;
+  decription: string;
+  stock_quantity: number;
+  category_id: number;
+  status: boolean;
+}
 const Shop = () => {
   const [products, setProducts] = useState<product[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -22,13 +33,13 @@ const Shop = () => {
     };
     loadProducts();
   }, [currentPage, pageSize]);
-  // const getPageNumbers = () => {
-  //   const pageNumbers = [];
-  //   for (let i = 1; i <= totalPages; i++) {
-  //     pageNumbers.push(i);
-  //   }
-  //   return pageNumbers;
-  // };
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
   const categoryStore = useSelector((store: any) => store.category);
   return (
     <div className="shop">
@@ -59,6 +70,18 @@ const Shop = () => {
                 <div className="showing-product">
                   <p className="m-0">Showing 1–9 of 55 results</p>
                 </div>
+                <select
+                  className="select-page-size"
+                  value={pageSize}
+                  onChange={(e) => {
+                    setPageSize(Number(e.target.value));
+                    setCurrentPage(0);
+                  }}
+                >
+                  <option value="10">10 per page</option>
+                  <option value="20">20 per page</option>
+                  <option value="50">50 per page</option>
+                </select>
                 <div className="sort-by">
                   <select className="filter-categories border-0 m-0">
                     <option value="">Default sorting</option>
@@ -74,100 +97,122 @@ const Shop = () => {
                 </div>
               </div>
 
-              <div className="product-grid row">
-                <ul>
-                  {products?.map((product) => (
-                    <li key={product.product_id}>
-                      <div className="col-md-4 my-4">
-                        <div className="card position-relative">
-                          <a href="single-product.html">
-                            <img
-                              src={item7Image}
-                              className="img-fluid rounded-4"
-                              alt="image"
-                            />
-                          </a>
-                          <div className="card-body p-0">
-                            <a href="single-product.html">
-                              <h3 className="card-title pt-4 m-0">
-                                {product.product_name}
-                              </h3>
+              {/* <div > */}
+              <ul className="product-grid row">
+                {products?.map((product) => (
+                  <li key={product.product_id} className="col-md-4 my-4">
+                    {/* <div > */}
+                    <div className="card position-relative">
+                      <a href="/product">
+                        <img
+                          src={product.imageUrls[0]}
+                          className="img-fluid rounded-4"
+                          alt="image"
+                        />
+                      </a>
+                      <div className="card-body p-0">
+                        <a href="single-product.html">
+                          <h3 className="card-title pt-4 m-0">
+                            {product.product_name}
+                          </h3>
+                        </a>
+                        <div className="card-text">
+                          <span className="rating secondary-font">
+                            <iconify-icon
+                              icon="clarity:star-solid"
+                              className="text-primary"
+                            ></iconify-icon>
+                            <iconify-icon
+                              icon="clarity:star-solid"
+                              className="text-primary"
+                            ></iconify-icon>
+                            <iconify-icon
+                              icon="clarity:star-solid"
+                              className="text-primary"
+                            ></iconify-icon>
+                            <iconify-icon
+                              icon="clarity:star-solid"
+                              className="text-primary"
+                            ></iconify-icon>
+                            <iconify-icon
+                              icon="clarity:star-solid"
+                              className="text-primary"
+                            ></iconify-icon>
+                            5.0
+                          </span>
+                          <h3 className="secondary-font text-primary">
+                            {moneyFormat(product.unitPrice)}
+                          </h3>
+                          <div className="d-flex flex-wrap mt-3">
+                            <a
+                              href="#"
+                              className="btn-cart me-3 px-4 pt-3 pb-3"
+                            >
+                              <h5 className="text-uppercase m-0">
+                                Add to Cart
+                              </h5>
                             </a>
-                            <div className="card-text">
-                              <span className="rating secondary-font">
-
-                                5.0
-                              </span>
-                              <h3 className="secondary-font text-primary">
-                                {product.price}
-                              </h3>
-                              <div className="d-flex flex-wrap mt-3">
-                                <a
-                                  href="#"
-                                  className="btn-cart me-3 px-4 pt-3 pb-3"
-                                >
-                                  <h5 className="text-uppercase m-0">Add to Cart</h5>
-                                </a>
-                                <a href="#" className="btn-wishlist px-4 pt-3">
-                                  <Icon
-                                    icon="fluent:heart-28-filled"
-                                    className="fs-5"
-                                  />
-                                </a>
-                              </div>
-                            </div>
+                            <a href="#" className="btn-wishlist px-3 pt-3 pb-3">
+                              <Icon
+                                icon="fluent:heart-28-filled"
+                                className="fs-5"
+                              />
+                            </a>
                           </div>
                         </div>
                       </div>
-                    </li>
-                  ))}
-                </ul>
-                
-              </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
 
-              {/* // danh sách sản phẩm */}
+              {/* </div> */}
 
-
-
-              
-
-              <nav
+               <nav
                 className="navigation paging-navigation text-center mt-5"
                 role="navigation"
               >
                 <div className="pagination loop-pagination d-flex justify-content-center align-items-center">
-                  <a
-                    href="#"
+                  <button
                     className="pagination-arrow d-flex align-items-center mx-3"
+                     onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
+                  disabled={currentPage === 0}
                   >
                     <Icon
                       icon="ic:baseline-keyboard-arrow-left"
                       className="pagination-arrow fs-1"
                     />
-                  </a>
+                  </button>
+                   {getPageNumbers().map((number) => (
+                  <button
+                    key={number}
+                    className={`pagination-button ${
+                      currentPage === number - 1 ? "active" : ""
+                    }`}
+                    onClick={() => setCurrentPage(number - 1)}
+                  >
                   <span
                     aria-current="page"
                     className="page-numbers mt-2 fs-3 mx-3 current"
                   >
-                    1
+                    {number}
                   </span>
-                  <a className="page-numbers mt-2 fs-3 mx-3" href="#">
-                    2
-                  </a>
-                  <a className="page-numbers mt-2 fs-3 mx-3" href="#">
-                    3
-                  </a>
-                  <a
-                    href="#"
+                  </button>
+                ))}
+                  <button
                     className="pagination-arrow d-flex align-items-center mx-3"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))
+                    }
+                    disabled={currentPage === totalPages - 1}
                   >
                     <Icon
                       icon="ic:baseline-keyboard-arrow-right"
                       className="pagination-arrow fs-1"
                     />
-                  </a>
+                  </button>
                 </div>
-              </nav>
+              </nav>  
             </main>
 
             <aside className="col-md-3 mt-5">
