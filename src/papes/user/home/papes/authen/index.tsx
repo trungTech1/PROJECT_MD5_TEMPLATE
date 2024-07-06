@@ -206,7 +206,7 @@ function handleLogin(ev: React.FormEvent) {
                       }}>
                       <div className="form-input col-lg-12 my-4">
 
-                        <input required type="text" id="exampleInputName" name="userName" className="form-control mb-3 p-4"
+                        <input autoFocus required type="text" id="exampleInputName" name="userName" className="form-control mb-3 p-4"
                           placeholder="Your User Name" />
                         <input required type="text" id="exampleInputEmail1" name="email" className="form-control mb-3 p-4"
                           placeholder="Your email address" />
