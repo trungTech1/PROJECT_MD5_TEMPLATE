@@ -2,7 +2,7 @@ import api from "@/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
-export interface Category {
+export interface categories {
   category_id: number;
   category_name: string;
   image: string;
@@ -10,13 +10,21 @@ export interface Category {
 }
 
 interface CategoryState {
-  categories: Category[];
+  categories: categories[];
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
   loading: boolean;
+  error: string | null;
 }
 
 const initialState: CategoryState = {
   categories: [],
-  loading: false,
+  totalPages: 0,
+  currentPage: 0,
+  pageSize: 5,
+  loading: true,
+  error: null,
 };
 
 export const categorySlice = createSlice({
@@ -24,7 +32,7 @@ export const categorySlice = createSlice({
   initialState,
   reducers: {
     setData: (state, action) => {
-        state.categories = action.payload;
+        state.categories = action.payload.content;
         },
     addCategory: (state, action) => {
       state.categories.push(action.payload);
@@ -35,22 +43,20 @@ export const categorySlice = createSlice({
       );
     },
     updateCategory: (state, action) => {
-      state.categories = state.categories.map((category) =>
-        category.category_id === action.payload.category_id
-          ? action.payload
-          : category
+      const index = state.categories.findIndex(
+        (category) => category.category_id === action.payload.category_id
       );
+      if (index !== -1) {
+        state.categories[index] = action.payload;
     }
+  }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchData.pending, (state) => {
-      state.loading = true;
-    });
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.loading = false;
-      state.categories = action.payload;
-    });
-    builder.addCase(fetchData.rejected, (state) => {
+      console.log("action.payload", action.payload)
+      state.categories = action.payload.content;
+      state.totalPages = action.payload.totalPages;
+      state.currentPage = action.payload.page;
       state.loading = false;
     });
   },
@@ -59,8 +65,8 @@ export const categorySlice = createSlice({
 
 const fetchData = createAsyncThunk(
   "category/fetchData",
-  async () => {
-    const response = await api.category.getCategories();
+  async ({ page, pageSize }: { page: number, pageSize: number }) => {
+    const response = await api.category.getCategories(page, pageSize);
     return response.data;
   }
 );

@@ -8,9 +8,17 @@ export const categoryApi = {
     ) => {
         return await axios.post(`${API_URL}/${prefix}/add`, data);
     },
-    getCategories: async () => {
-        return await axios.get(`${API_URL}/${prefix}`);
-    },
+        getCategories: async (
+        page: number,
+        pageSize: number,
+        searchTerm?: string
+      ) => {
+        let url = `${API_URL}/${prefix}?page=${page}&size=${pageSize}`;
+        if (searchTerm) {
+          url = `${API_URL}/${prefix}/search?page=${page}&size=${pageSize}&search=${encodeURIComponent(searchTerm)}`;
+        }
+        return await axios.get(url);
+      },
     updateCategory: async (
         data: { category_id: number; category_name: string; image: string; status: boolean;},
     ) => {
@@ -21,8 +29,5 @@ export const categoryApi = {
     },
     deleteCategory: async (id: number) => {
         return await axios.get(`${API_URL}/${prefix}/delete/${id}`);
-    },
-    searchCategory: async (text: string) => {
-        return await axios.get(`${API_URL}/${prefix}/search/${text}`);
     },
 }

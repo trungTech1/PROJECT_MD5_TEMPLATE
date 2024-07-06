@@ -10,7 +10,7 @@ const Banner = () => {
               <div className="row banner-content align-items-center">
                 <div className="img-wrapper col-md-5">
                   <img
-                    src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/banner-img.png?alt=media&token=f87e1644-596f-4686-a44a-bc07393689b6"
+                    src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/banner-img.png?alt=media&token=7ea70903-80fa-4ab2-bc85-2cba9f83d5e5"
                     alt="banner-img"
                     className="img-fluid"
                   />

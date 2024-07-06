@@ -9,7 +9,7 @@ const Categories = () => {
             <a href="#" className="categories-item">
               <div className="category-icon">
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/cate1.png?alt=media&token=ca5cf247-16a9-4541-b5cf-dd2f67184081"
+                  src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/cate1.png?alt=media&token=09ffecbd-fcac-45df-a01c-e3e19d299020"
                   alt=""
                 />
               </div>
@@ -20,7 +20,7 @@ const Categories = () => {
             <a href="#" className="categories-item">
               <div className="category-icon">
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/cate2.png?alt=media&token=afda49e9-165b-4b66-83fc-06d30f95fd25"
+                  src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/cate2.png?alt=media&token=a9dcc5c1-6514-42f3-95fa-85564283a9c8"
                   alt=""
                 />
               </div>
@@ -31,7 +31,7 @@ const Categories = () => {
             <a href="#" className="categories-item">
               <div className="category-icon">
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/cate3.png?alt=media&token=83fc1049-6f1a-4845-9f77-3a859b5e9f02"
+                  src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/cate3.png?alt=media&token=6f1102f8-fb6f-4eab-af1b-bf77b59722d0"
                   alt=""
                 />
               </div>
@@ -42,7 +42,7 @@ const Categories = () => {
             <a href="#" className="categories-item">
               <div className="category-icon">
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/cate4.png?alt=media&token=fbbc967a-c4ac-483b-bcec-814a9cd018a0"
+                  src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/cate4.png?alt=media&token=608dfc00-404a-4461-b1dc-d9f50972ef18"
                   alt=""
                 />
               </div>
@@ -53,7 +53,7 @@ const Categories = () => {
             <a href="#" className="categories-item">
               <div className="category-icon">
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/shopthucung-d74f2.appspot.com/o/cate5.png?alt=media&token=4123404f-2039-471d-9bb3-d5413c527bf6"
+                  src="https://firebasestorage.googleapis.com/v0/b/shopinufb.appspot.com/o/cate5.png?alt=media&token=3de7ce04-5959-4ba6-b9e4-6cc553e5f04d"
                   alt=""
                 />
               </div>

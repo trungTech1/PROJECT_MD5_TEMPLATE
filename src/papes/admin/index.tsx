@@ -11,7 +11,7 @@ const Admin: React.FC = () => {
   
   return (
     <div className="wrapper">
-      <Sidebar />
+      <Sidebar  />
       <div className="main-content">
         <header>
           <div className='admin-header'>
@@ -22,9 +22,9 @@ const Admin: React.FC = () => {
               <ChangeLanguage /></div>
           </div>
         </header>
-        <div className="table">
+        <main className="table">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );
