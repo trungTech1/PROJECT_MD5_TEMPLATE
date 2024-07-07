@@ -53,7 +53,6 @@ export const categorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      console.log("action.payload", action.payload)
       state.categories = action.payload.content;
       state.totalPages = action.payload.totalPages;
       state.currentPage = action.payload.page;
@@ -61,7 +60,6 @@ export const categorySlice = createSlice({
     });
   },
 });
-
 
 const fetchData = createAsyncThunk(
   "category/fetchData",

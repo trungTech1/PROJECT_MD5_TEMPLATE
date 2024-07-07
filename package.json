@@ -13,7 +13,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@iconify/react": "^5.0.1",
-    "@mui/icons-material": "^5.15.14",
+    "@mui/icons-material": "^5.16.0",
     "@mui/material": "^5.15.14",
     "@reduxjs/toolkit": "^2.2.6",
     "@types/chart.js": "^2.9.41",
@@ -43,6 +43,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "typescript": "^5.2.2",
-    "vite": "^5.2.6"
+    "vite": "^5.3.3"
   }
 }

@@ -1,7 +1,21 @@
 import React from "react";
 import "./checkout.scss";
+import { RootState } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import moneyFormat from "@/util/util";
+import api from "@/api";
+import { Modal } from "antd";
+import { orderActions } from "@/store/slices/order.slice";
 
 const Checkout = () => {
+  const dispatch = useDispatch();
+  const orderStore = useSelector((state: RootState) => state.order);
+
+  const calculateTotal = (cartDetails: any[]) => {
+    return cartDetails.reduce((total, item) => total + item.price, 0);
+  };
+  const totalAmount = calculateTotal(orderStore.cart?.details || []);
+
   return (
     <div>
       <section id="banner" className="py-3" style={{ background: "#F9F3EC;" }}>
@@ -123,18 +137,6 @@ const Checkout = () => {
                     <option value="vinhphuc">Vĩnh Phúc</option>
                     <option value="yenbai">Yên Bái</option>
                   </select>
-                  <label htmlFor="cname">Huyện <span className="requiet">*</span></label>
-                  <select
-                    className="form-select form-control mt-2 mb-4"
-                    aria-label="Default select example"
-                  >
-                    <option selected hidden>
-                      United States
-                    </option>
-                    <option value="1">UK</option>
-                    <option value="2">Australia</option>
-                    <option value="3">Canada</option>
-                  </select>
                   <label htmlFor="address">Địa chỉ*</label>
                   <input
                     type="text"
@@ -185,8 +187,7 @@ const Checkout = () => {
                           <td data-title="Subtotal">
                             <span className="price-amount amount ps-5">
                               <bdi>
-                                <span className="price-currency-symbol">$</span>
-                                1,500.00{" "}
+                                {moneyFormat(totalAmount)}
                               </bdi>
                             </span>
                           </td>
@@ -196,8 +197,7 @@ const Checkout = () => {
                           <td data-title="Total">
                             <span className="price-amount amount ps-5">
                               <bdi>
-                                <span className="price-currency-symbol">$</span>
-                                1,500.00{" "}
+                                {moneyFormat(totalAmount)}
                               </bdi>
                             </span>
                           </td>
@@ -259,6 +259,22 @@ const Checkout = () => {
                       type="submit"
                       name="submit"
                       className="btn btn-dark btn-lg rounded-1 w-100"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        try {
+                         await api.order.checkOut(orderStore.cart?.id || 0, totalAmount);
+                          Modal.success({
+                            title: "Đặt hàng thành công",
+                            content: "Chúng tôi sẽ liên hệ với bạn sớm nhất",
+                            onOk() {
+                              window.location.href = "/";
+                              dispatch(orderActions.loadDataThunk() as any);
+                            },
+                          })
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      }}
                     >
                       THANH TOÁN
                     </button>

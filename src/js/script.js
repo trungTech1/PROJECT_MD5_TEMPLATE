@@ -110,10 +110,6 @@
     });
   }
   
-  // Include the 'jarallax' library
-  var jarallax = require('jarallax');
-
-  // document ready
   $(document).ready(function() {
     
     initPreloader();

@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Icon } from "@iconify/react";
-import item7Image from "@images/item7.jpg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import api from "@/api";
 import "./shop.scss";
 import moneyFormat from "@/util/util";
+import { orderActions } from "@/store/slices/order.slice";
 interface product {
   product_id: number;
   product_name: string;
   imageUrls: string[];
   unitPrice: number;
-  decription: string;
+  description: string;
   stock_quantity: number;
   category_id: number;
   status: boolean;
@@ -22,12 +22,13 @@ const Shop = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadProducts = async () => {
       const data = await api.product.getAllproducts(currentPage, pageSize);
-      console.log(data.data.content);
       setProducts(data.data.content);
       setTotalPages(data.data.totalPages);
     };
@@ -144,14 +145,32 @@ const Shop = () => {
                             {moneyFormat(product.unitPrice)}
                           </h3>
                           <div className="d-flex flex-wrap mt-3">
-                            <a
-                              href="#"
+                            <button
                               className="btn-cart me-3 px-4 pt-3 pb-3"
+                              onClick={()=>{
+                                const data ={
+                                  productId: product.product_id,
+                                  quantity: 1,
+                                  price : product.unitPrice
+                                }
+                                if(data !== null){
+                                  api.order.addToCart(data).then((res)=>{
+                                    dispatch(orderActions.loadDataThunk() as any)
+                                    console.log("add to cart success", res)
+                                }
+                                ).catch((err)=>{
+                                  console.log("add to cart failed", err)
+
+                                }
+                                )
+                                }
+                              }}
                             >
-                              <h5 className="text-uppercase m-0">
+                              <h5 className="text-uppercase m-0"
+                              >
                                 Add to Cart
                               </h5>
-                            </a>
+                            </button>
                             <a href="#" className="btn-wishlist px-3 pt-3 pb-3">
                               <Icon
                                 icon="fluent:heart-28-filled"
@@ -218,7 +237,7 @@ const Shop = () => {
             <aside className="col-md-3 mt-5">
               <div className="sidebar">
                 <div className="widget-menu">
-                  <div className="widget-search-bar">
+                  {/* <div className="widget-search-bar">
                     <div className="search-bar border rounded-2 border-dark-subtle pe-3">
                       <form
                         id="search-form"
@@ -244,7 +263,7 @@ const Shop = () => {
                         </svg>
                       </form>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="widget-product-categories pt-5">
