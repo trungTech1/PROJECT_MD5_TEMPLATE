@@ -1,19 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserTable.scss';
-import { Link } from 'react-router-dom';
+import api from '@/api';
+import { useTranslation } from 'react-i18next';
+
+interface user {
+  id: number;
+  userName: string;
+  email: string;
+  status: string;
+  phone: string;
+  address: string;
+  createdAt: string;
+  isDeleted: boolean;
+  role: boolean;
+}
 
 const UserTable: React.FC = () => {
+const [users, setUsers] = useState<user[] | null>(null);
+const { t } = useTranslation();
+const [searchTerm, setSearchTerm] = useState("");
+const [currentPage, setCurrentPage] = useState(0);
+const [totalPages, setTotalPages] = useState(0);
+const [pageSize, setPageSize] = useState(10); 
+useEffect(() => {
+  // fetch data
+  const fetchUsers = async () => {
+    try {
+      const response = await api.user.getAllusers( currentPage, pageSize, searchTerm);
+      console.log(response.data);
+      console.log(response.data);
+      setUsers(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  fetchUsers();
+}, [currentPage, pageSize, searchTerm]);
+const getPageNumbers = () => {
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+  return pageNumbers;
+};
+
+const handleSearch = () => {
+  setCurrentPage(0);
+
+};
   return (
     <div className="user-table-container">
       <div className="header">
         <h1>User Table</h1>
         <div className="actions">
-          <button className="add-button">
-            <Link className="link-add-user" to ="/admin/user/add">Add new User</Link>
+        <div className="search-box">
+              <input
+                type="text"
+                placeholder={t("placeholderSearchCategory")}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault(); // Ngăn chặn hành vi mặc định của phím Enter
+                    handleSearch();
+                  }
+                }
+                }
+              />
+            <button className="search-button" onClick={handleSearch}>
+              {t("search")}
             </button>
-          <div className="search-box">
-            <input type="text" placeholder="Enter user's name..." />
-            <button>Search</button>
           </div>
         </div>
       </div>
@@ -64,12 +120,43 @@ const UserTable: React.FC = () => {
         </tbody>
       </table>
       <div className="pagination">
-        <button className="pagination-button">Previous</button>
-        <button className="pagination-button">1</button>
-        <button className="pagination-button">2</button>
-        <button className="pagination-button">3</button>
-        <button className="pagination-button">4</button>
-        <button className="pagination-button">Next</button>
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
+          disabled={currentPage === 0}
+        >
+          Previous
+        </button>
+        {getPageNumbers().map((number) => (
+          <button
+            key={number}
+            className={`pagination-button ${
+              currentPage === number - 1 ? "active" : ""
+            }`}
+            onClick={() => setCurrentPage(number - 1)}
+          >
+            {number}
+          </button>
+        ))}
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))
+          }
+          disabled={currentPage === totalPages - 1}
+        >
+          Next
+        </button>
+        <select
+          className="select-page-size"
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+            setCurrentPage(0);
+          }}
+        >
+          <option value="10">10 per page</option>
+          <option value="20">20 per page</option>
+          <option value="50">50 per page</option>
+        </select>
       </div>
     </div>
   );
