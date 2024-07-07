@@ -348,7 +348,7 @@ const handleLogin = (ev: React.FormEvent) => {
                             <ul className="list-unstyled mb-0">
                               <li>
                                 <a
-                                  href="/account"
+                                  href="account"
                                   className="dropdown-item py-2 px-4"
                                 >
                                   <FaUser className="me-2" /> User Profile
@@ -356,7 +356,7 @@ const handleLogin = (ev: React.FormEvent) => {
                               </li>
                               <li>
                                 <a
-                                  href="/orders"
+                                  href="cart"
                                   className="dropdown-item py-2 px-4"
                                 >
                                   <FaShoppingBag className="me-2" /> My Orders
@@ -364,7 +364,7 @@ const handleLogin = (ev: React.FormEvent) => {
                               </li>
                               <li>
                                 <a
-                                  href="/wishlist"
+                                  href="wishlist"
                                   className="dropdown-item py-2 px-4"
                                 >
                                   <FaHeart className="me-2" /> Favorite products
@@ -372,7 +372,7 @@ const handleLogin = (ev: React.FormEvent) => {
                               </li>
                               <li>
                                 <a
-                                  href="/settings"
+                                  href="settings"
                                   className="dropdown-item py-2 px-4"
                                 >
                                   <FaCog className="me-2" /> Setting
@@ -380,7 +380,7 @@ const handleLogin = (ev: React.FormEvent) => {
                               </li>
                               <li>
                                 <a
-                                  href="/logout"
+                                  href="logout"
                                   className="dropdown-item py-2 px-4 "
                                   onClick={handleLogout}
                                 >

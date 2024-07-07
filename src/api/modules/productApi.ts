@@ -31,4 +31,5 @@ export const productApi = {
     searchProduct: async (text: string) => {
         return await axios.get(`${API_URL}/${prefix}/search/${text}`);
     },
+
 };
