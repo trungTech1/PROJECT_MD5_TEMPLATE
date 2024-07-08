@@ -1,106 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './OrderTable.scss';
 import { useTranslation } from 'react-i18next';
+import api from '@/api';
+import moneyFormat from '@/util/util';
+import OrderDetailModal from './modal/ModalDetail';
 
+interface image {
+  id: number;
+  imageUrl: string;
+}
+interface order {
+  id: number
+  user: {
+    id: number;
+    imageProducts : image[];
+    userName: string;
+    address: string;
+    phone: string;
+  }
+  totalPrices: number;
+  status: string;
+  note: string;
+  createDate: string;
+  updateDate: string;
+  details: any[];
+}
 const OrderTable: React.FC = () => {
   const {t} = useTranslation();
+  const [orders, setOrders] = useState<order[] | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    // fetch data
+  const fetchOrders = async () => {
+    try {
+      const response = await api.order.getCart();
+      console.log(response.data);
+      setOrders(response.data);
+    } catch (error) {
+      console.log(error);
+    } 
+  }
+  fetchOrders();
+  }, []);
 
   const [selectedStatus, setSelectedStatus] = useState('');
 
-  const listOrder = [
-    {
-      id: 1,
-      serialNumber: 1,
-      userId: 1,
-      image: "https://via.placeholder.com/50",
-      totalPrice: 567,
-      status: "WAITING",
-      note: "hàng dễ vỡ",
-      receiveName: "...",
-      receiveAddress: "...",
-      receivePhone: "...",
-      createdAt: "16/06/2024",
-      receivedAt: "20/06/2024",
-    },
-    {
-      id: 2,
-      serialNumber: 2,
-      userId: 2,
-      image: "https://via.placeholder.com/50",
-      totalPrice: 567,
-      status: "CONFIRM",
-      note: "hàng dễ vỡ",
-      receiveName: "...",
-      receiveAddress: "...",
-      receivePhone: "...",
-      createdAt: "16/06/2024",
-      receivedAt: "20/06/2024",
-    },
-    {
-      id: 3,
-      serialNumber: 3,
-      userId: 3,
-      image: "https://via.placeholder.com/50",
-      totalPrice: 567,
-      status: "DELIVERY",
-      note: "hàng dễ vỡ",
-      receiveName: "...",
-      receiveAddress: "...",
-      receivePhone: "...",
-      createdAt: "16/06/2024",
-      receivedAt: "20/06/2024",
-    },
-    {
-      id: 4,
-      serialNumber: 4,
-      userId: 4,
-      image: "https://via.placeholder.com/50",
-      totalPrice: 567,
-      status: "SUCCESS",
-      note: "hàng dễ vỡ",
-      receiveName: "...",
-      receiveAddress: "...",
-      receivePhone: "...",
-      createdAt: "16/06/2024",
-      receivedAt: "20/06/2024",
-    },
-    {
-      id: 5,
-      serialNumber: 5,
-      userId: 5,
-      image: "https://via.placeholder.com/50",
-      totalPrice: 567,
-      status: "CANCEL",
-      note: "hàng dễ vỡ",
-      receiveName: "...",
-      receiveAddress: "...",
-      receivePhone: "...",
-      createdAt: "16/06/2024",
-      receivedAt: "20/06/2024",
-    },
-    {
-      id: 6,
-      serialNumber: 6,
-      userId: 6,
-      image: "https://via.placeholder.com/50",
-      totalPrice: 567,
-      status: "DENIED",
-      note: "hàng dễ vỡ",
-      receiveName: "...",
-      receiveAddress: "...",
-      receivePhone: "...",
-      createdAt: "16/06/2024",
-      receivedAt: "20/06/2024",
-    },
-  ];
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedStatus(e.target.value);
+  }
 
-  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedStatus(event.target.value);
+  const handleDetailClick = (order: any) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
   };
 
-  const filteredOrders = selectedStatus
-    ? listOrder.filter(order => order.status.toUpperCase() === selectedStatus.toUpperCase())
-    : listOrder;
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrder(null);
+  };
+
   return (
     <div className="order-table-container">
       <div className="header">
@@ -124,10 +85,9 @@ const OrderTable: React.FC = () => {
       <table className="order-table">
         <thead>
           <tr>
+            <th>{t("stt")}</th>
             <th>{t("id")}</th>
-            <th>{t("serialNumber")}</th>
             <th>{t("userId")}</th>
-            <th>{t("image")}</th>
             <th>{t("totalPrice")}</th>
             <th>{t("status")}</th>
             <th>{t("note")}</th>
@@ -140,25 +100,28 @@ const OrderTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-  {filteredOrders.map((order) => (
-    <tr key={order.id}>
+  { orders?.map((order, index) => (
+    <tr key={index + 1}>
+      <td>{index +1}</td>
       <td>{order.id}</td>
-      <td>{order.serialNumber}</td>
-      <td>{order.userId}</td>
-      <td><img src={order.image} alt={`Product ${order.id}`} /></td>
-      <td>{order.totalPrice}</td>
+      <td>{order.user.id}</td>
+      <td> {moneyFormat(order.totalPrices)}</td>
       <td>{order.status}</td>
       <td>{order.note}</td>
-      <td>{order.receiveName}</td>
-      <td>{order.receiveAddress}</td>
-      <td>{order.receivePhone}</td>
-      <td>{order.createdAt}</td>
-      <td>{order.receivedAt}</td>
+      <td>{order.user.userName}</td> 
+      <td>{order.user.address? "" : "chua co dia chi"}</td>
+      <td>{order.user.phone ? "" : " chua co sdt"}</td>
+      <td>{order.createDate}</td>
+      <td>{order.updateDate}</td>
       <td>
-        <button className="detail-button">{t("detail")}</button>
+      <button className="detail-button" onClick={() => handleDetailClick(order)}>{t("detail")}</button>
       </td>
       <td>
-        <button className="change-button">{t("changeStatus")}</button>
+        <button className="change-button"
+        onClick={async () => {
+          handleStatusChange(order.id, status)
+        }}
+        >{t("changeStatus")}</button>
       </td>
     </tr>
   ))}
@@ -172,6 +135,8 @@ const OrderTable: React.FC = () => {
         <button className="pagination-button">4</button>
         <button className="pagination-button">{t("next")}</button>
       </div>
+      {isModalOpen && <OrderDetailModal order={selectedOrder} onClose={closeModal} />}
+  
     </div>
   );
 };

@@ -8,8 +8,18 @@ export const userApi = {
     ) => {
         return await axios.post(`${API_URL}/login`, data);
     }, 
-
-    
+    getAllusers: async (
+        page: number,
+        size: number,
+        searchTeam?: string
+    ) => {
+        let url = `${API_URL}/${prefix}?page=${page}&size=${size}`;
+        if (searchTeam) {
+            url = `${API_URL}/${prefix}/search?page=${page}&size=${size}&search=${encodeURIComponent(searchTeam)}`;
+        }
+        return await axios.get(url);
+    }
+    , 
     register: async (
         data: { email: string; password: string; userName: string },
     ) => {

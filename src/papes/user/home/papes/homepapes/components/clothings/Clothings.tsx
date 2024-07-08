@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./clothing.scss";
-import api from "@/api";
 
 const Clothings = () => {
-  const [clothings, setClothings] = React.useState([]);
 
   return (
     <section id="clothing" className="my-5 overflow-hidden">
@@ -55,15 +53,10 @@ const Clothings = () => {
                       <iconify-icon icon="fluent:heart-28-filled" className="fs-5"></iconify-icon>
                     </a>
                   </div>
-
-
                 </div>
-
               </div>
             </div>
           </div>
-          
-
         </div>
       </div>
     </div>

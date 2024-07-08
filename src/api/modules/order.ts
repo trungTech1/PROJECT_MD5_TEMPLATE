@@ -22,5 +22,8 @@ export const orderApi = {
     deleteCart: async (cartId: number, totalamout : number) => {
         return axios.get(`${API_URL}/order/delete-cart/${cartId}`, {params: {totalamout}})
     },
+    changeStatus: async (cartId: number, status: string) => {
+        return axios.post(`${API_URL}/order/change-status/${cartId}`, {status})
+    }
     
 }
